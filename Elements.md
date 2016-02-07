@@ -8,7 +8,7 @@ This should ease implementation efforts.
   - EndPosition `Integer`
   - Hand `[]Card`
 
-- GameArea `TableTop`
+- GameArea `Tabletop`
   - DiscardPile `[]Card`
   - CurrentTricks `[][]Card`
   - CurrentPassedPlayers `[]Integer`
