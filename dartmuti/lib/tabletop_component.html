@@ -16,6 +16,11 @@
     <li *ngFor="#player of model.currentPassedPlayers" [value]="player">{{player}} </li>
     <li *ngIf="model.currentPassedPlayers == null || model.currentPassedPlayers.length == 0"> No players have! </li>
   </ul>
+  <h2>Deck of cards</h2>
+  <ul>
+    <li *ngFor="#card of model.deck" [value]="card">{{card}} </li>
+    <li *ngIf="model.discardPile == null || model.discardPile.length == 0"> No cards! </li>
+  </ul>
   <h2>Discard Pile</h2>
   <ul>
     <li *ngFor="#card of model.discardPile" [value]="card">{{card}} </li>
