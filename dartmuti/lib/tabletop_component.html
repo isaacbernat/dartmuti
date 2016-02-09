@@ -4,8 +4,8 @@
   <ol>
     <li *ngFor="#trick of model.currentTricks">
       <ul>
-        <li *ngFor="#card of trick">
-          Card with value: {{card}}
+         <li *ngFor="#card of trick.cards">
+          Card: {{card}}
         </li>
       </ul>
     </li>

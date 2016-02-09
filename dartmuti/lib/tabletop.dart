@@ -1,10 +1,11 @@
 import 'card.dart';
+import 'trick.dart';
 
 class Tabletop {
   String name;
   List<Card> deck;
   List<Card> discardPile = [];
-  List<List<int>> currentTricks = [];
+  List<Trick> currentTricks = [];
   List<int> currentPassedPlayers = [];
   List<String> roles = [
     "The Great Dalmuti",
@@ -27,8 +28,8 @@ class Tabletop {
       var lol = new Card(1, 4, "Marshall");
       discards.add(lol);
       discardPile = discards;
-      currentTricks = [[4, 4], [3, 3]];
       deck = buildDeck(12, roles);
+      currentTricks = [new Trick([deck[0]])];
   }
 
   List<Card> buildDeck(int highestValue, [List <String> roles]) {
@@ -43,5 +44,5 @@ class Tabletop {
     return cards;
   }
 
-  String toString() => '$name -> trick to beat: $currentTricks.last . $discardPile.length cards discarded.';
+  String toString() => '$name -> trick to beat: $currentTricks.last . $discardPile cards discarded.';
 }
