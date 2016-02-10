@@ -17,13 +17,17 @@
     <li *ngIf="model.currentPassedPlayers == null || model.currentPassedPlayers.length == 0"> No players have! </li>
   </ul>
   <h2>Deck of cards</h2>
-  <ul>
-    <li *ngFor="#card of model.deck" [value]="card">{{card}} </li>
+  <ul class="deck">
+    <li *ngFor="#card of model.deck">
+      <dartmuti-card [model]="card"> Loading cart... </dartmuti-card>
+    </li>
     <li *ngIf="model.discardPile == null || model.discardPile.length == 0"> No cards! </li>
   </ul>
   <h2>Discard Pile</h2>
-  <ul>
-    <li *ngFor="#card of model.discardPile" [value]="card">{{card}} </li>
+  <ul class="deck">
+    <li *ngFor="#card of model.discardPile" [value]="card">
+      <dartmuti-card [model]="card"> Loading cart... </dartmuti-card>
+    </li>
     <li *ngIf="model.discardPile == null || model.discardPile.length == 0"> Is empty! </li>
   </ul>
 </div>

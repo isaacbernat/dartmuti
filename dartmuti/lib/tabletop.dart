@@ -24,10 +24,7 @@ class Tabletop {
   Tabletop(this.name, [this.discardPile, this.currentTricks, this.currentPassedPlayers]);
 
   void init() {
-      List<Card> discards = [];
-      var lol = new Card(1, 4, "Marshall");
-      discards.add(lol);
-      discardPile = discards;
+      discardPile = buildDeck(3, roles);
       deck = buildDeck(12, roles);
       currentTricks = [new Trick([deck[0]])];
   }
@@ -43,6 +40,5 @@ class Tabletop {
     }
     return cards;
   }
-
   String toString() => '$name -> trick to beat: $currentTricks.last . $discardPile cards discarded.';
 }

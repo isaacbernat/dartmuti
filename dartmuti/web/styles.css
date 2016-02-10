@@ -10,3 +10,14 @@
 .card .value {
     font-size: 10em;
 }
+
+.deck .card {
+    margin-top: -15em; /* card height + border*2 */
+}
+
+.deck li:first-child .card {
+    margin-top: 0em;
+    color: orange;
+    background-color: yellow;
+    position: relative;
+}
