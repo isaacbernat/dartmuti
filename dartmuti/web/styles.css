@@ -1,0 +1,12 @@
+.card {
+    height: 14em;
+    width: 10em;
+    border: 0.5em solid hsla(0, 0%, 50%, 0.5);
+    border-radius: 1em;
+    background-color: red;
+    text-align: center;
+}
+
+.card .value {
+    font-size: 10em;
+}
