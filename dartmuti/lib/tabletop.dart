@@ -26,7 +26,7 @@ class Tabletop {
   void init() {
       discardPile = buildDeck(3, roles);
       deck = buildDeck(12, roles);
-      currentTricks = [new Trick([deck[0]])];
+      currentTricks = [new Trick([deck[1], deck[2]]), new Trick([deck[3], deck[4]])];
   }
 
   List<Card> buildDeck(int highestValue, [List <String> roles]) {

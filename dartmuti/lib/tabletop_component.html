@@ -1,16 +1,12 @@
 <div class="container">
   <h1>Dartmuti tabletop: {{model.name}}</h1>
   <h2>Current tricks</h2>
-  <ol>
-    <li *ngFor="#trick of model.currentTricks">
-      <ul>
-         <li *ngFor="#card of trick.cards">
-          <dartmuti-card [model]="card"> Loading cart... </dartmuti-card>
-        </li>
-      </ul>
+  <ul>
+    <li class="tricks" *ngFor="#trick of model.currentTricks">
+      <dartmuti-trick [model]="trick"> Loading tricks... </dartmuti-trick>
     </li>
     <li *ngIf="model.currentTricks == null || model.currentTricks.length == 0"> There are no tricks ATM! </li>
-  </ol>
+  </ul>
   <h2>Players who passed</h2>
   <ul>
     <li *ngFor="#player of model.currentPassedPlayers" [value]="player">{{player}} </li>

@@ -1,3 +1,9 @@
+ul {
+    list-style-type: none;
+}
+
+/*----- cards -----*/
+
 .card {
     height: 14em;
     width: 10em;
@@ -20,4 +26,26 @@
     color: orange;
     background-color: yellow;
     position: relative;
+}
+
+/*----- tricks -----*/
+
+.tricks:first-child .trick{
+    margin-top: 0em;
+    position: relative;
+}
+
+.trick {
+    padding-bottom: 20em;
+    margin-top: -15em; /* card height + border*2 */
+}
+
+.trick ul li {
+    display: inline;
+    list-style-type: none;
+    float: left;
+}
+
+.trick .card {
+    margin-left: -4em;
 }
