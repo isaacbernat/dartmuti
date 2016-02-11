@@ -5,39 +5,51 @@ ul {
 /*----- cards -----*/
 
 .card {
-    height: 14em;
-    width: 10em;
+    font-family: serif;
+    height: 16em;
+    width: 12em;
     border: 0.5em solid hsla(0, 0%, 50%, 0.5);
     border-radius: 1em;
     background-color: red;
     text-align: center;
+    position: relative;
 }
 
 .card .value {
     font-size: 10em;
+    border: solid 0.1em hsla(0, 0%, 25%, 0.5);
+    margin: 0 0.1em;
+    background: hsla(0, 0%, 75%, 0.5);
 }
 
+.card .border.bottom {
+    transform: rotate(180deg);
+}
+
+/*----- decks of cards -----*/
+
 .deck .card {
-    margin-top: -15em; /* card height + border*2 */
+    margin-top: -17em; /* card height + border*2 */
 }
 
 .deck li:first-child .card {
     margin-top: 0em;
-    color: orange;
-    background-color: yellow;
-    position: relative;
 }
 
 /*----- tricks -----*/
 
 .tricks:first-child .trick{
     margin-top: 0em;
-    position: relative;
+}
+
+.tricks:last-child .trick .card {
+    color: orange;
+    background-color: yellow;
 }
 
 .trick {
     padding-bottom: 20em;
-    margin-top: -15em; /* card height + border*2 */
+    margin-top: -17em; /* card height + border*2 */
 }
 
 .trick ul li {

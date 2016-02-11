@@ -26,7 +26,13 @@ class Tabletop {
   void init() {
       discardPile = buildDeck(3, roles);
       deck = buildDeck(12, roles);
-      currentTricks = [new Trick([deck[1], deck[2]]), new Trick([deck[3], deck[4]])];
+      currentTricks = [
+        new Trick([deck[10]]),
+        new Trick([deck[6]]),
+        new Trick([deck[3], deck[4]]),
+        new Trick([deck[1], deck[2]]),
+        ];
+      deck = deck.reversed.toList();
   }
 
   List<Card> buildDeck(int highestValue, [List <String> roles]) {
