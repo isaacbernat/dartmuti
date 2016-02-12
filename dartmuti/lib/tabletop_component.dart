@@ -10,7 +10,7 @@ import 'card_component.dart';
 class TabletopComponent {
   Tabletop model;
   TabletopComponent() {
-      model = new Tabletop('Test state');
-      model.init();
+    model = new Tabletop('Test state');
+    model.init();
   }
 }

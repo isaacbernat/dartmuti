@@ -33,3 +33,8 @@ A playful light card game seemed fit for the project.
   - You may skip steps 3 and 4. Just type `pub serve` instead.
   - By default, type `http://localhost:8080` in your browser navigation bar.
   - It will be slower, as it needs to compile the Dart code into JavaScript...
+
+### Contributing
+Apply [dartfmt](https://github.com/dart-lang/dart_style) to your code before
+you push to the repository, to get nice formatting.
+`dartfmt -w . | grep Formatted`
