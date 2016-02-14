@@ -27,9 +27,9 @@
     <li *ngIf="model.discardPile == null || model.discardPile.length == 0"> Is empty! </li>
   </ul>
   <h2>Settings</h2>
-  <h3>Card roles</h3>
-  <p> second is named {{model.roles[1]['name']}}</p>
-  <input type="text" [(ngModel)]="model.roles[1]['name']">
+  <h3>Card roles</h3> <!-- This section is even more WIP than that above -->
+  <p> second is named {{model.DeckService.roles[1]['name']}}</p>
+  <input type="text" [(ngModel)]="model.DeckService.roles[1]['name']">
   <table>
     <thead>
       <tr>
@@ -39,7 +39,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="#role of model.roles">
+      <tr *ngFor="#role of model.DeckService.roles">
         <td><input type="numeric" [(ngModel)]="role['value']"></td>
         <td><input type="numeric" [(ngModel)]="role['amount']"></td>
         <td><input type="text" [(ngModel)]="role['name']"></td>
