@@ -7,11 +7,14 @@
     </li>
     <li *ngIf="model.currentTricks == null || model.currentTricks.length == 0"> There are no tricks ATM! </li>
   </ul>
-  <h2>Players who passed</h2>
+  <h2>Players</h2>
   <ul>
-    <li *ngFor="#player of model.currentPassedPlayers" [value]="player">{{player}} </li>
-    <li *ngIf="model.currentPassedPlayers == null || model.currentPassedPlayers.length == 0"> No players have! </li>
+    <li class="players" *ngFor="#player of model.players">
+      {{player}}
+    </li>
+    <li *ngIf="model.players == null || model.players.length == 0"> No players! </li>
   </ul>
+
   <h2>Deck of cards</h2>
   <ul class="deck">
     <li *ngFor="#card of model.deck">
