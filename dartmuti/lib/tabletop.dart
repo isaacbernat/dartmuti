@@ -55,4 +55,16 @@ class Tabletop {
     deck.removeRange(0, deck.length);
     return remainder;
   }
+
+  int countCardsTricks() {
+    return currentTricks.fold(0, (t, e) => t + e.cards.length);
+  }
+
+  int countCardsPlayers() {
+    return players.fold(0, (t, e) => t + e.hand.length);
+  }
+
+  int countCards() {
+    return discardPile.length + countCardsPlayers() + countCardsTricks();
+  }
 }

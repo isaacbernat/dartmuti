@@ -1,6 +1,6 @@
 <div class="container">
   <h1>Dartmuti tabletop: {{model.name}}</h1>
-  <h2>Current tricks</h2>
+  <h2>Current tricks ({{model.currentTricks.length}}, totalling {{model.countCardsTricks()}} cards)</h2>
   <ul>
     <li class="tricks" *ngFor="#trick of model.currentTricks">
       <dartmuti-trick [model]="trick"> Loading tricks... </dartmuti-trick>
@@ -15,14 +15,7 @@
     <li *ngIf="model.players == null || model.players.length == 0"> No players! </li>
   </ul>
 
-  <h2>Deck of cards</h2>
-  <ul class="deck">
-    <li *ngFor="#card of model.deck">
-      <dartmuti-card [model]="card"> Loading cart... </dartmuti-card>
-    </li>
-    <li *ngIf="model.discardPile == null || model.discardPile.length == 0"> No cards! </li>
-  </ul>
-  <h2>Discard Pile</h2>
+  <h2>Discard Pile ({{model.discardPile.length}} / {{model.countCards()}})</h2>
   <ul class="deck">
     <li class="backside" *ngFor="#card of model.discardPile" [value]="card">
       <dartmuti-card [model]="card"> Loading cart... </dartmuti-card>
