@@ -35,6 +35,10 @@ class Tabletop {
       new Player(4, "hest", 3)
     ];
     discardPile = deal(deck, players);
+
+    for (var p in players) {
+      p.sortHand();
+    }
   }
 
   String toString() =>

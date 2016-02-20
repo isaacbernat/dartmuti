@@ -9,5 +9,9 @@ class Player {
   Player(this.ID, this.name, this.position,
       [this.currentTurn, this.hasPassed, this.hand]);
 
+  void sortHand() {
+    hand.sort((a, b) => a.value - b.value);
+  }
+
   String toString() => '$ID: $name ($hand.length cards)';
 }
