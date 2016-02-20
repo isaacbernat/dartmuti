@@ -61,3 +61,22 @@ ul {
 .trick .card {
     margin-left: -4em;
 }
+
+/*----- player -----*/
+.player {
+    height: 10em;
+}
+
+.player ul {
+    font-size: 6px;
+}
+
+.player ul li {
+    display: inline;
+    list-style-type: none;
+    float: left;
+}
+
+.player .card {
+    margin-left: -4em;
+}

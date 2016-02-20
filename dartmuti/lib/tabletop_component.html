@@ -10,7 +10,7 @@
   <h2>Players</h2>
   <ul>
     <li class="players" *ngFor="#player of model.players">
-      {{player}}
+      <dartmuti-player [model]="player"> Loading players... </dartmuti-player>
     </li>
     <li *ngIf="model.players == null || model.players.length == 0"> No players! </li>
   </ul>
