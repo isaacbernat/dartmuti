@@ -13,32 +13,25 @@ class Tabletop {
   List<Trick> currentTricks = [];
   List<Player> players = [];
 
-  Tabletop(String name) {
-    this.name = name;
-  }
+  Tabletop() {}
 
-  void init() {
+  void startGame() {
+    seed = seed.toInt();
     deck = DeckService.getDeck();
-    currentTricks = [
-      new Trick([deck[10]]),
-      new Trick([deck[6]]),
-      new Trick([deck[3], deck[4]]),
-      new Trick([deck[1], deck[2]]),
-    ];
-    deck.shuffle(new Random(seed.toInt()));
+    deck.shuffle(new Random(seed));
+    players.shuffle(new Random(seed));
 
-    players = [
-      new Player(1, "k05", 0),
-      new Player(2, "9001", 1),
-      new Player(3, "1338", 2),
-      new Player(4, "hest", 3)
-    ];
     discardPile = deal(deck, players);
-
     for (var p in players) {
       p.sortHand();
     }
-    startRound();
+  }
+
+  void addPlayer(String name) {
+    if (name?.length > 0) {
+      players.add(new Player(name, []));
+    }
+    name = '';
   }
 
   String toString() =>

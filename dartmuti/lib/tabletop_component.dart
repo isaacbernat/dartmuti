@@ -20,8 +20,7 @@ import 'deck_service.dart';
 class TabletopComponent {
   Tabletop model;
   TabletopComponent(DeckService DS) {
-    model = new Tabletop('Test state');
+    model = new Tabletop();
     model.DeckService = DS;
-    model.init();
   }
 }

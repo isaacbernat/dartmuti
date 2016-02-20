@@ -1,22 +1,24 @@
 <div class="container">
-  <h1>Dartmuti tabletop: {{model.name}}</h1>
+  <h1>Dartmuti tabletop</h1>
+  <label>Seed</label>
+  <input type="number" [(ngModel)]="model.seed">
+  <button (click)="model.randomiseSeed()"> Randomise seed </button>
+  <button (click)="model.startGame()"> Start Game! </button>
   <h2>Current tricks ({{model.currentTricks.length}}, totalling {{model.countCardsTricks()}} cards)</h2>
   <ul>
     <li class="tricks" *ngFor="#trick of model.currentTricks">
       <dartmuti-trick [model]="trick"> Loading tricks... </dartmuti-trick>
     </li>
-    <li *ngIf="model.currentTricks == null || model.currentTricks.length == 0"> There are no tricks ATM! </li>
   </ul>
   <h2>Players</h2>
   <ul>
-    <li class="players" *ngFor="#player of model.players">
-      <div [ngClass]="{backside: !player.currentTurn}">
-        <dartmuti-player [model]="player"> Loading players... </dartmuti-player>
-      </div>
+    <li><input #newPlayer (keyup.enter)="model.addPlayer(newPlayer.value); newPlayer.value=''">
+        <button (click)="model.addPlayer(newPlayer.value); newPlayer.value=''">Add</button>
     </li>
-    <li *ngIf="model.players == null || model.players.length == 0"> No players! </li>
+    <li class="players" *ngFor="#player of model.players">
+        <dartmuti-player [ngClass]="{backside: !player.currentTurn}" [model]="player"> Loading players... </dartmuti-player>
+    </li>
   </ul>
-
   <h2>Discard Pile ({{model.discardPile.length}} / {{model.countCards()}})</h2>
   <ul class="deck">
     <li class="backside" *ngFor="#card of model.discardPile" [value]="card">
@@ -25,8 +27,4 @@
     <li *ngIf="model.discardPile == null || model.discardPile.length == 0"> Is empty! </li>
   </ul>
   <h2>Settings</h2>
-
-  <h2>Advanced</h2> <!-- This section is even more WIP than that above -->
-  <label>Seed</label> <input type="number" [(ngModel)]="model.seed"> <button (click)="model.randomiseSeed()"> Randomise seed </button> <button (click)="model.init()"> Re-initialise </button>
-
 </div>
