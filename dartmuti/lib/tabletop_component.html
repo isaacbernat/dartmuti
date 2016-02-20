@@ -10,7 +10,9 @@
   <h2>Players</h2>
   <ul>
     <li class="players" *ngFor="#player of model.players">
-      <dartmuti-player [model]="player"> Loading players... </dartmuti-player>
+      <div [ngClass]="{backside: !player.currentTurn}">
+        <dartmuti-player [model]="player"> Loading players... </dartmuti-player>
+      </div>
     </li>
     <li *ngIf="model.players == null || model.players.length == 0"> No players! </li>
   </ul>
@@ -23,23 +25,8 @@
     <li *ngIf="model.discardPile == null || model.discardPile.length == 0"> Is empty! </li>
   </ul>
   <h2>Settings</h2>
-  <h3>Card roles</h3> <!-- This section is even more WIP than that above -->
-  <p> second is named {{model.DeckService.roles[1]['name']}}</p>
-  <input type="text" [(ngModel)]="model.DeckService.roles[1]['name']">
-  <table>
-    <thead>
-      <tr>
-        <th>Value</th>
-        <th>Amount</th>
-        <th>Name</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="#role of model.DeckService.roles">
-        <td><input type="numeric" [(ngModel)]="role['value']"></td>
-        <td><input type="numeric" [(ngModel)]="role['amount']"></td>
-        <td><input type="text" [(ngModel)]="role['name']"></td>
-      </tr>
-    </tbody>
-  </table>
+
+  <h2>Advanced</h2> <!-- This section is even more WIP than that above -->
+  <label>Seed</label> <input type="number" [(ngModel)]="model.seed"> <button (click)="model.randomiseSeed()"> Randomise seed </button> <button (click)="model.init()"> Re-initialise </button>
+
 </div>

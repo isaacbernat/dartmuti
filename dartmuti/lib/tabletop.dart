@@ -7,7 +7,7 @@ import 'deck_service.dart';
 class Tabletop {
   DeckService DeckService;
   String name;
-  int seed;
+  int seed = 1337;
   List<Card> deck = [];
   List<Card> discardPile = [];
   List<Trick> currentTricks = [];
@@ -19,14 +19,13 @@ class Tabletop {
 
   void init() {
     deck = DeckService.getDeck();
-    seed = 1337;
     currentTricks = [
       new Trick([deck[10]]),
       new Trick([deck[6]]),
       new Trick([deck[3], deck[4]]),
       new Trick([deck[1], deck[2]]),
     ];
-    deck.shuffle(new Random(seed));
+    deck.shuffle(new Random(seed.toInt()));
 
     players = [
       new Player(1, "k05", 0),
@@ -39,6 +38,7 @@ class Tabletop {
     for (var p in players) {
       p.sortHand();
     }
+    startRound();
   }
 
   String toString() =>
@@ -56,6 +56,14 @@ class Tabletop {
     return remainder;
   }
 
+  bool startRound() {
+    // returns True if there are still valid moves
+    for (var p in players) {
+      p.currentTurn = false;
+      p.hasPassed = false;
+    }
+  }
+
   int countCardsTricks() {
     return currentTricks.fold(0, (t, e) => t + e.cards.length);
   }
@@ -66,5 +74,10 @@ class Tabletop {
 
   int countCards() {
     return discardPile.length + countCardsPlayers() + countCardsTricks();
+  }
+
+  void randomiseSeed() {
+    var r = new Random();
+    seed = r.nextInt(65535);
   }
 }

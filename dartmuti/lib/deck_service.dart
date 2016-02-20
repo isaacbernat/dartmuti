@@ -28,10 +28,6 @@ class DeckService {
     return buildDeck(roles);
   }
 
-  shuffleDeck(List<Card> deck, [int seed]) {
-    deck.shuffle(new Random(seed));
-  }
-
   List<Map> initRoles(List<String> roleNames) {
     Observable<List<Map>> roles = [];
     for (int value = 1; value < roleNames.length + 1; value++) {
