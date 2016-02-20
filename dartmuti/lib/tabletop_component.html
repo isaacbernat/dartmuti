@@ -24,7 +24,7 @@
   </ul>
   <h2>Discard Pile</h2>
   <ul class="deck">
-    <li *ngFor="#card of model.discardPile" [value]="card">
+    <li class="backside" *ngFor="#card of model.discardPile" [value]="card">
       <dartmuti-card [model]="card"> Loading cart... </dartmuti-card>
     </li>
     <li *ngIf="model.discardPile == null || model.discardPile.length == 0"> Is empty! </li>

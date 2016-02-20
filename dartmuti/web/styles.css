@@ -26,6 +26,22 @@ ul {
     transform: rotate(180deg);
 }
 
+.backside .card .value {
+    display: none;
+}
+
+.backside .card .name {
+    display: none;
+}
+
+.backside .card {
+    /* based on https://github.com/LeaVerou/css3patterns */
+    background-image: radial-gradient(closest-side, transparent 98%, rgba(0,0,0,.3) 99%),
+                      radial-gradient(closest-side, transparent 98%, rgba(0,0,0,.3) 99%);
+    background-size: 2em 2em;
+    background-position:0 0, 1em 1em;
+}
+
 /*----- decks of cards -----*/
 
 .deck .card {
