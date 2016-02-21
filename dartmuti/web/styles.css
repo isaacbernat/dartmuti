@@ -42,6 +42,10 @@ ul {
     background-position:0 0, 1em 1em;
 }
 
+.passed .card {
+    background-color: salmon;
+}
+
 /*----- decks of cards -----*/
 
 .deck .card {

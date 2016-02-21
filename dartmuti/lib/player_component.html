@@ -1,5 +1,5 @@
 <div class="player {{model.name}}">
-  <h2>{{model.name}} ({{model.hand.length}} cards)</h2>
+  <h2>{{model.name}} ({{model.hand.length}} cards) {{model.hasPassed ? " -- pass" : "" }}</h2>
   <ul>
     <li *ngFor="#card of model.hand">
       <dartmuti-card [model]="card"> Loading card... </dartmuti-card>

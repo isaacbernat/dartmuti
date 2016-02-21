@@ -4,8 +4,13 @@
   <input type="number" [(ngModel)]="model.seed">
   <button (click)="model.randomiseSeed()"> Randomise seed </button>
   <button (click)="model.startGame()"> Start Game! </button>
-  <h2>Current tricks ({{model.currentTricks.length}}, totalling {{model.countCardsTricks()}} cards)</h2>
+  <h2>Current ({{model.currentTricks.length}} tricks, totalling {{model.countCardsTricks()}} cards)</h2>
   <ul>
+    <li *ngIf="model.players.length == 0"> You need to add players before you can start playing!</li>
+    <li *ngIf="model.players.length > 0"> It's {{model.players[model.currentPlayer].name}} turn
+      <button (click)="model.startTurn(model.currentPlayer)"> Accept </button>
+      <button (click)="model.passTurn(model.currentPlayer)"> Pass </button>
+    </li>
     <li class="tricks" *ngFor="#trick of model.currentTricks">
       <dartmuti-trick [model]="trick"> Loading tricks... </dartmuti-trick>
     </li>
@@ -16,7 +21,7 @@
         <button (click)="model.addPlayer(newPlayer.value); newPlayer.value=''">Add</button>
     </li>
     <li class="players" *ngFor="#player of model.players">
-        <dartmuti-player [ngClass]="{backside: !player.currentTurn}" [model]="player"> Loading players... </dartmuti-player>
+        <dartmuti-player [ngClass]="{backside: !player.currentTurn, passed: player.hasPassed}" [model]="player"> Loading players... </dartmuti-player>
     </li>
   </ul>
   <h2>Discard Pile ({{model.discardPile.length}} / {{model.countCards()}})</h2>

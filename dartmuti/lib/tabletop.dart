@@ -12,6 +12,7 @@ class Tabletop {
   List<Card> discardPile = [];
   List<Trick> currentTricks = [];
   List<Player> players = [];
+  int currentPlayer = 0;
 
   Tabletop() {}
 
@@ -55,6 +56,29 @@ class Tabletop {
       p.currentTurn = false;
       p.hasPassed = false;
     }
+  }
+
+  bool passTurn(int position) {
+    players[position].currentTurn = false;
+    players[position].hasPassed = true;
+    currentPlayer = nextPlayerPosition();
+    if (currentPlayer == position) {
+      startRound();
+      return false;
+    }
+    return true;
+  }
+
+  int nextPlayerPosition() {
+    // returns current player if no other eligible
+    int i = 0;
+    do {
+      int nextPosition = (i + currentPlayer) % players.length;
+      if (!players[nextPosition].hasPassed) {
+        return nextPosition;
+      }
+    } while (++i < players.length);
+    return currentPlayer;
   }
 
   int countCardsTricks() {
