@@ -30,7 +30,7 @@ class Tabletop {
 
   void addPlayer(String name) {
     if (name?.length > 0) {
-      players.add(new Player(name, []));
+      players.add(new Player(name));
     }
     name = '';
   }
@@ -69,11 +69,16 @@ class Tabletop {
     return true;
   }
 
+  bool playTurn(int position) {
+    players[position].currentTurn = true;
+  }
+
   int nextPlayerPosition() {
     // returns current player if no other eligible
     int i = 0;
     do {
       int nextPosition = (i + currentPlayer) % players.length;
+
       if (!players[nextPosition].hasPassed) {
         return nextPosition;
       }

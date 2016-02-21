@@ -1,12 +1,16 @@
 class Player {
   String name;
-  int position;
+  int endPosition;
   bool currentTurn;
   bool hasPassed;
   List<Card> hand = [];
 
-  Player(this.name, this.hand,
-      [this.position, this.currentTurn, this.hasPassed]);
+  Player(String name) {
+    this.name = name;
+    this.hand = [];
+    this.currentTurn = false;
+    this.hasPassed = false;
+  }
 
   void sortHand() {
     hand.sort((a, b) => a.value - b.value);
