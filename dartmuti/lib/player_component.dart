@@ -5,7 +5,7 @@ import 'card_component.dart';
     selector: 'dartmuti-player',
     templateUrl: 'player_component.html',
     inputs: const ['model'],
-    directives: const [CardComponent])
+    directives: const [NgClass, CardComponent])
 class PlayerComponent {
   Player model;
   PlayerComponent() {}

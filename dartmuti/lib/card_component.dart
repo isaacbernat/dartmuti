@@ -4,7 +4,11 @@ import 'card.dart';
 @Component(
     selector: 'dartmuti-card',
     templateUrl: 'card_component.html',
-    inputs: const ['model'])
+    inputs: const ['model'],
+    directives: const [
+      NgClass,
+      ]
+    )
 class CardComponent {
   Card model;
   CardComponent() {}

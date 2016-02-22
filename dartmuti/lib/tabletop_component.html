@@ -21,7 +21,7 @@
         <button (click)="model.addPlayer(newPlayer.value); newPlayer.value=''">Add</button>
     </li>
     <li class="players" *ngFor="#player of model.players">
-        <dartmuti-player [ngClass]="{backside: !player.currentTurn, passed: player.hasPassed}" [model]="player"> Loading players... </dartmuti-player>
+        <dartmuti-player [model]="player"> Loading players... </dartmuti-player>
     </li>
   </ul>
   <h2>Discard Pile ({{model.discardPile.length}} / {{model.countCards()}})</h2>
