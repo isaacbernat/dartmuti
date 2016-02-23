@@ -6,7 +6,9 @@ class Card {
 
   Card(this.ID, this.value, [this.name]);
 
-  void toggleSelected() {this.selected = !selected;}
+  void toggleSelected() {
+    this.selected = !selected;
+  }
 
   String toString() => '$ID: $value ($name)';
 }

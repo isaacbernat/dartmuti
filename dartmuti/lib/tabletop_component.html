@@ -8,8 +8,9 @@
   <ul>
     <li *ngIf="model.players.length == 0"> You need to add players before you can start playing!</li>
     <li *ngIf="model.players.length > 0"> It's {{model.players[model.currentPlayer].name}} turn
-      <button *ngIf="!model.players[model.currentPlayer].currentTurn" (click)="model.playTurn(model.currentPlayer)"> Accept </button>
       <button (click)="model.passTurn(model.currentPlayer)"> Pass </button>
+      <button *ngIf="!model.players[model.currentPlayer].currentTurn" (click)="model.playTurn(model.currentPlayer)"> Accept </button>
+      <button *ngIf="model.players[model.currentPlayer].currentTurn" (click)="model.playTrick(model.currentPlayer)"> Play trick </button>
     </li>
     <li class="tricks" *ngFor="#trick of model.currentTricks">
       <dartmuti-trick [model]="trick"> Loading tricks... </dartmuti-trick>

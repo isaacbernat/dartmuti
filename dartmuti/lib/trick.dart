@@ -19,12 +19,13 @@ class Trick {
 
   String toString() => '$cards';
 
-  static bool beats(Trick otherTrick) {
+  bool beats(Trick otherTrick) {
     if (cardValue == 1) {
       // 1 trumps everything
       return true;
     }
-    if (cards.length >= otherTrick.length && cardValue < otherTrick[0].value) {
+    if (cards.length >= otherTrick.cards.length &&
+        cardValue < otherTrick.cards[0].value) {
       return true;
     }
     return false;

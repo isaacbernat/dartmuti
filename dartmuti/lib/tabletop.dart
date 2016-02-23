@@ -59,6 +59,9 @@ class Tabletop {
   }
 
   bool passTurn(int position) {
+    for (var c in players[position].hand) {
+      c.selected = false;
+    }
     players[position].currentTurn = false;
     players[position].hasPassed = true;
     currentPlayer = nextPlayerPosition();
@@ -71,6 +74,33 @@ class Tabletop {
 
   bool playTurn(int position) {
     players[position].currentTurn = true;
+  }
+
+  bool playTrick(int playerPosition) {
+    List<Card> selectedCards = [];
+    Trick newTrick;
+    for (var c in players[playerPosition].hand) {
+      if (c.selected) {
+        selectedCards.add(c);
+      }
+    }
+    try {
+      newTrick = new Trick(selectedCards);
+    } catch (e) {
+      print("You can't form a Trick with these cards!");
+      return;
+    }
+    if (currentTricks.length == 0 ||
+        newTrick.beats(currentTricks[currentTricks.length - 1])) {
+      for (var c in selectedCards) {
+        players[playerPosition].hand.remove(c);
+      }
+      currentTricks.add(newTrick);
+    } else {
+      print("This trick is not 'powerful' enough to trink the current one");
+      return;
+    }
+    passTurn(playerPosition);
   }
 
   int nextPlayerPosition() {
