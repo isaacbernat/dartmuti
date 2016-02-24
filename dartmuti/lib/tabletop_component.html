@@ -4,21 +4,23 @@
   <input type="number" [(ngModel)]="model.seed">
   <button (click)="model.randomiseSeed()"> Randomise seed </button>
   <button (click)="model.startGame()"> Start Game! </button>
-  <h2>Current ({{model.currentTricks.length}} tricks, totalling {{model.countCardsTricks()}} cards)</h2>
-  <ul>
-    <li *ngIf="model.players.length == 0"> You need to add players before you can start playing!</li>
-    <li *ngIf="model.players.length > 0"> It's {{model.players[model.currentPlayer].name}} turn
-      <button (click)="model.passTurn(model.currentPlayer)"> Pass </button>
-      <button *ngIf="!model.players[model.currentPlayer].currentTurn" (click)="model.playTurn(model.currentPlayer)"> Accept </button>
-      <button *ngIf="model.players[model.currentPlayer].currentTurn" (click)="model.playTrick(model.currentPlayer)"> Play trick </button>
-    </li>
-    <li class="tricks" *ngFor="#trick of model.currentTricks">
-      <dartmuti-trick [model]="trick"> Loading tricks... </dartmuti-trick>
-    </li>
-  </ul>
+  <div [ngClass]="{hidden: !model.startedGame}">
+    <h2>Current ({{model.currentTricks.length}} tricks, totalling {{model.countCardsTricks()}} cards)</h2>
+    <ul class="tricks">
+      <li *ngIf="model.players.length == 0"> You need to add players before you can start playing!</li>
+      <li *ngIf="model.players.length > 0"> It's {{model.players[model.currentPlayer].name}} turn
+        <button (click)="model.passTurn(model.currentPlayer)"> Pass </button>
+        <button *ngIf="!model.players[model.currentPlayer].currentTurn" (click)="model.playTurn(model.currentPlayer)"> Accept </button>
+        <button *ngIf="model.players[model.currentPlayer].currentTurn" (click)="model.playTrick(model.currentPlayer)"> Play trick </button>
+      </li>
+      <li *ngFor="#trick of model.currentTricks">
+        <dartmuti-trick [model]="trick"> Loading tricks... </dartmuti-trick>
+      </li>
+    </ul>
+  </div>
   <h2>Players</h2>
   <ul>
-    <li><input #newPlayer (keyup.enter)="model.addPlayer(newPlayer.value); newPlayer.value=''">
+    <li [ngClass]="{hidden: model.startedGame}" ><input #newPlayer (keyup.enter)="model.addPlayer(newPlayer.value); newPlayer.value=''">
         <button (click)="model.addPlayer(newPlayer.value); newPlayer.value=''">Add</button>
     </li>
     <li class="players" *ngFor="#player of model.players">
@@ -32,5 +34,4 @@
     </li>
     <li *ngIf="model.discardPile == null || model.discardPile.length == 0"> Is empty! </li>
   </ul>
-  <h2>Settings</h2>
 </div>

@@ -12,6 +12,7 @@ import 'deck_service.dart';
     directives: const [
       NgFor,
       NgIf,
+      NgClass,
       TrickComponent,
       CardComponent,
       PlayerComponent,

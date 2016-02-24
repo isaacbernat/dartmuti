@@ -13,10 +13,12 @@ class Tabletop {
   List<Trick> currentTricks = [];
   List<Player> players = [];
   int currentPlayer = 0;
+  bool startedGame = false;
 
   Tabletop() {}
 
   void startGame() {
+    startedGame = true;
     seed = seed.toInt();
     deck = DeckService.getDeck();
     deck.shuffle(new Random(seed));
@@ -94,6 +96,11 @@ class Tabletop {
         newTrick.beats(currentTricks[currentTricks.length - 1])) {
       for (var c in selectedCards) {
         players[playerPosition].hand.remove(c);
+      }
+      if(currentTricks.length > 0) {
+        for (var c in currentTricks[currentTricks.length - 1].cards) {
+          c.selected = false;
+        }
       }
       currentTricks.add(newTrick);
     } else {

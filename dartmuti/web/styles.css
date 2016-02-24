@@ -2,6 +2,10 @@ ul {
     list-style-type: none;
 }
 
+.hidden {
+    display: none;
+}
+
 /*----- cards -----*/
 
 .card {
@@ -62,11 +66,6 @@ ul {
 }
 
 /*----- tricks -----*/
-
-.tricks:last-child .trick .card {
-    color: orange;
-    background-color: yellow;
-}
 
 .trick {
     padding-bottom: 17em;  /* card height + border*2 */
