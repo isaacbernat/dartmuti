@@ -78,8 +78,12 @@ ul {
     float: left;
 }
 
-.trick .card {
-    margin-left: -4em;
+.tricks .trick {
+    margin: -15em 0 0 -4em; /* card height */
+}
+
+.tricks li:nth-child(2) .trick {
+    margin-top: 1em;
 }
 
 /*----- player -----*/

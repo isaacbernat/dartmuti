@@ -19,6 +19,7 @@ class Tabletop {
 
   void startGame() {
     startedGame = true;
+    discardPile = [];
     seed = seed.toInt();
     deck = DeckService.getDeck();
     deck.shuffle(new Random(seed));
