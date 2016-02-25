@@ -59,6 +59,13 @@ class Tabletop {
       p.currentTurn = false;
       p.hasPassed = false;
     }
+    for (var t in currentTricks) {
+      for (var c in t.cards) {
+        c.selected = false;
+        discardPile.add(c);
+      }
+    }
+    currentTricks = [];
   }
 
   bool passTurn(int position) {
@@ -98,7 +105,7 @@ class Tabletop {
       for (var c in selectedCards) {
         players[playerPosition].hand.remove(c);
       }
-      if(currentTricks.length > 0) {
+      if (currentTricks.length > 0) {
         for (var c in currentTricks[currentTricks.length - 1].cards) {
           c.selected = false;
         }
@@ -108,12 +115,18 @@ class Tabletop {
       print("This trick is not 'powerful' enough to trink the current one");
       return;
     }
-    passTurn(playerPosition);
+    currentPlayer = nextPlayerPosition();
+    if (currentPlayer == playerPosition) {
+      startRound();
+      return false;
+    }
+    players[playerPosition].currentTurn = false;
+    return true;
   }
 
   int nextPlayerPosition() {
     // returns current player if no other eligible
-    int i = 0;
+    int i = 1;
     do {
       int nextPosition = (i + currentPlayer) % players.length;
 

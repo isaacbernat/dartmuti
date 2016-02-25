@@ -38,3 +38,8 @@ A playful light card game seemed fit for the project.
 Apply [dartfmt](https://github.com/dart-lang/dart_style) to your code before
 you push to the repository, to get nice formatting.
 `dartfmt -w . | grep Formatted`
+
+### Version 0.0.1
+- Add as many players as you want
+- Support for the basic 80 card deck (minus 2 jokers)
+- Customisable random seed
