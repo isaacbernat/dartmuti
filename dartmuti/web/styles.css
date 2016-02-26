@@ -1,0 +1,106 @@
+ul {
+    list-style-type: none;
+}
+
+.hidden {
+    display: none;
+}
+
+/*----- cards -----*/
+
+.card {
+    font-family: serif;
+    height: 16em;
+    width: 12em;
+    border: 0.5em solid hsla(0, 0%, 50%, 0.5);
+    border-radius: 1em;
+    background-color: red;
+    text-align: center;
+    position: relative;
+}
+
+.card.selected {
+    color: orange;
+    background-color: yellow;
+}
+
+.card .value {
+    font-size: 10em;
+    border: solid 0.1em hsla(0, 0%, 25%, 0.5);
+    margin: 0 0.1em;
+    background: hsla(0, 0%, 75%, 0.5);
+}
+
+.card .border.bottom {
+    transform: rotate(180deg);
+}
+
+.backside .card .value {
+    display: none;
+}
+
+.backside .card .name {
+    display: none;
+}
+
+.backside .card {
+    /* based on https://github.com/LeaVerou/css3patterns */
+    background-image: radial-gradient(closest-side, transparent 98%, rgba(0,0,0,.3) 99%),
+                      radial-gradient(closest-side, transparent 98%, rgba(0,0,0,.3) 99%);
+    background-size: 2em 2em;
+    background-position:0 0, 1em 1em;
+}
+
+.passed .card {
+    background-color: salmon;
+}
+
+/*----- decks of cards -----*/
+
+.deck .card {
+    margin-top: -17em; /* card height + border*2 */
+}
+
+.deck li:first-child .card {
+    margin-top: 0em;
+}
+
+/*----- tricks -----*/
+
+.trick {
+    padding-bottom: 17em;  /* card height + border*2 */
+    margin-top: 1em;
+}
+
+.trick ul li {
+    display: inline;
+    list-style-type: none;
+    float: left;
+}
+
+.tricks .trick {
+    margin: -15em 0 0 -4em; /* card height */
+}
+
+.tricks li:nth-child(2) .trick {
+    margin-top: 1em;
+}
+
+/*----- player -----*/
+.player {
+    height: 10em;
+}
+
+.player ul {
+    font-size: 6px;
+}
+
+.player ul li {
+    display: inline;
+    list-style-type: none;
+    float: left;
+}
+
+.player .card {
+    margin-left: -4em;
+}

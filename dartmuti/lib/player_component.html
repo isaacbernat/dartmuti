@@ -1,0 +1,8 @@
+<div [ngClass]="{backside: !model.currentTurn, passed: model.hasPassed}" class="player {{model.name}}">
+  <h2>{{model.name}} ({{model.hand.length}} cards) {{model.hasPassed ? " -- pass" : "" }}</h2>
+  <ul>
+    <li *ngFor="#card of model.hand">
+      <dartmuti-card (click)="model.currentTurn?card.toggleSelected():''" [model]="card"> Loading card... </dartmuti-card>
+    </li>
+  </ul>
+</div>
