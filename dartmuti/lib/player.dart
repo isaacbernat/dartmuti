@@ -1,6 +1,6 @@
 class Player {
   String name;
-  int endPosition;
+  int endPosition; // FIXME not used ATM
   bool currentTurn;
   bool hasPassed;
   List<Card> hand = [];

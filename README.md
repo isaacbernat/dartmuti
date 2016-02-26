@@ -21,7 +21,7 @@ A playful light card game seemed fit for the project.
 2. Get all dependencies
   - `pub get`
 
-3. Serve the files (any HTTP server should work)
+3. Serve the files within `dartium` directory (any HTTP server should work)
   - `python -m SimpleHTTPServer`
 
 4. Navigate it through!
@@ -29,7 +29,7 @@ A playful light card game seemed fit for the project.
   - Go to `http://0.0.0.0:8000/web/` by default
   - Also check out [Observatory](https://dart-lang.github.io/observatory/)
 
-5. **If you don't want to Dartium...**
+5. **If you don't want Dartium...**
   - You may skip steps 3 and 4. Just type `pub serve` instead.
   - By default, type `http://localhost:8080` in your browser navigation bar.
   - It will be slower, as it needs to compile the Dart code into JavaScript...
@@ -39,7 +39,23 @@ Apply [dartfmt](https://github.com/dart-lang/dart_style) to your code before
 you push to the repository, to get nice formatting.
 `dartfmt -w . | grep Formatted`
 
-### Version 0.0.1
+#### TODOs
+In no specific order:
+
+- Refactor tabletop.dart
+- Port stylesheet to SASS and clean it up.
+- GUI/UX improvements.
+- Artwork + style improvements.
+- More customisable logic (e.g. decks, comparison rules, support jokers).
+- Responsive design.
+- API to be able to play the game via curl (also add ascii art version).
+- AI to play using this API.
+- Tests.
+- Stats.
+- etc.
+
+### Versions
+#### 0.1.0
 - Add as many players as you want
 - Support for the basic 80 card deck (minus 2 jokers)
 - Customisable random seed
