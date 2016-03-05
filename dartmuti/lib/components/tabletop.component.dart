@@ -1,7 +1,8 @@
 library dartmuti.component.tabletop;
 
 import 'package:angular2/angular2.dart';
-import 'package:angular2/router.dart' show RouteParams;
+import 'package:angular2/router.dart' show ROUTER_DIRECTIVES, RouteParams;
+
 import 'package:dartmuti/components/trick.component.dart';
 import 'package:dartmuti/components/card.component.dart';
 import 'package:dartmuti/components/player.component.dart';
@@ -13,6 +14,7 @@ import 'package:dartmuti/services/deck.service.dart';
     templateUrl: 'tabletop.component.html',
     providers: const [DeckService],
     directives: const [
+      ROUTER_DIRECTIVES,
       NgFor,
       NgIf,
       NgClass,

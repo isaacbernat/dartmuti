@@ -1,14 +1,14 @@
-library dartmuti.model.tabletop;
+library dartmuti.model.settings;
 
 import 'dart:math';
 import 'package:dartmuti/models/player.dart';
 import 'package:dartmuti/models/card.dart';
-import 'package:dartmuti/models/trick.dart';
 import 'package:dartmuti/services/deck.service.dart';
 
-class Tabletop {
+class Settings {
   DeckService DeckService;
   String name;
+  int seed = 1337;
   List<Card> deck = [];
   List<Card> discardPile = [];
   List<Trick> currentTricks = [];
@@ -16,7 +16,7 @@ class Tabletop {
   int currentPlayer = 0;
   bool startedGame = false;
 
-  Tabletop() {}
+  Settings() {}
 
   void startGame() {
     startedGame = true;
@@ -30,6 +30,13 @@ class Tabletop {
     for (var p in players) {
       p.sortHand();
     }
+  }
+
+  void addPlayer(String name) {
+    if (name?.length > 0) {
+      players.add(new Player(name));
+    }
+    name = '';
   }
 
   String toString() =>
@@ -141,5 +148,10 @@ class Tabletop {
 
   int countCards() {
     return discardPile.length + countCardsPlayers() + countCardsTricks();
+  }
+
+  void randomiseSeed() {
+    var r = new Random();
+    seed = r.nextInt(65535);
   }
 }

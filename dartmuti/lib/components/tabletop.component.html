@@ -1,28 +1,18 @@
 <div class="container">
-  <h1>Dartmuti tabletop (v 0.1)</h1>
-  <label>Seed</label>
-  <input type="number" [(ngModel)]="model.seed">
-  <button (click)="model.randomiseSeed()"> Randomise seed </button>
-  <button (click)="model.startGame()"> Start Game! </button>
-  <div [ngClass]="{hidden: !model.startedGame}">
-    <h2>Current ({{model.currentTricks.length}} tricks, totalling {{model.countCardsTricks()}} cards)</h2>
-    <ul class="tricks">
-      <li *ngIf="model.players.length == 0"> You need to add players before you can start playing!</li>
-      <li *ngIf="model.players.length > 0"> It's {{model.players[model.currentPlayer].name}} turn
-        <button (click)="model.passTurn(model.currentPlayer)"> Pass </button>
-        <button *ngIf="!model.players[model.currentPlayer].currentTurn" (click)="model.playTurn(model.currentPlayer)"> Accept </button>
-        <button *ngIf="model.players[model.currentPlayer].currentTurn" (click)="model.playTrick(model.currentPlayer)"> Play trick </button>
-      </li>
-      <li *ngFor="#trick of model.currentTricks">
-        <dartmuti-trick [model]="trick"> Loading tricks... </dartmuti-trick>
-      </li>
-    </ul>
-  </div>
+  <h2>Current ({{model.currentTricks.length}} tricks, totalling {{model.countCardsTricks()}} cards)</h2>
+  <ul class="tricks">
+    <li *ngIf="model.players.length == 0"> Go to <a [routerLink]="['Settings']">Settings</a> to add players and start playing!</li>
+    <li *ngIf="model.players.length > 0"> It's {{model.players[model.currentPlayer].name}} turn
+      <button (click)="model.passTurn(model.currentPlayer)"> Pass </button>
+      <button *ngIf="!model.players[model.currentPlayer].currentTurn" (click)="model.playTurn(model.currentPlayer)"> Accept </button>
+      <button *ngIf="model.players[model.currentPlayer].currentTurn" (click)="model.playTrick(model.currentPlayer)"> Play trick </button>
+    </li>
+    <li *ngFor="#trick of model.currentTricks">
+      <dartmuti-trick [model]="trick"> Loading tricks... </dartmuti-trick>
+    </li>
+  </ul>
   <h2>Players</h2>
   <ul>
-    <li [ngClass]="{hidden: model.startedGame}" ><input #newPlayer (keyup.enter)="model.addPlayer(newPlayer.value); newPlayer.value=''">
-        <button (click)="model.addPlayer(newPlayer.value); newPlayer.value=''">Add</button>
-    </li>
     <li class="players" *ngFor="#player of model.players">
         <dartmuti-player [model]="player"> Loading players... </dartmuti-player>
     </li>
