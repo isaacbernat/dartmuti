@@ -1,6 +1,8 @@
-import 'package:angular2/angular2.dart';
+library dartmuti.service.deck;
+
 import 'dart:math';
-import 'card.dart';
+import 'package:angular2/angular2.dart';
+import 'package:dartmuti/models/card.dart';
 
 @Injectable()
 class DeckService {

@@ -1,9 +1,11 @@
+library dartmuti.component.card;
+
 import 'package:angular2/angular2.dart';
-import 'card.dart';
+import 'package:dartmuti/models/card.dart';
 
 @Component(
     selector: 'dartmuti-card',
-    templateUrl: 'card_component.html',
+    templateUrl: 'card.component.html',
     inputs: const ['model'],
     directives: const [NgClass,])
 class CardComponent {

@@ -1,8 +1,10 @@
+library dartmuti.model.tabletop;
+
 import 'dart:math';
-import 'player.dart';
-import 'card.dart';
-import 'trick.dart';
-import 'deck_service.dart';
+import 'package:dartmuti/models/player.dart';
+import 'package:dartmuti/models/card.dart';
+import 'package:dartmuti/models/trick.dart';
+import 'package:dartmuti/services/deck.service.dart';
 
 class Tabletop {
   DeckService DeckService;

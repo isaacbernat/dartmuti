@@ -1,4 +1,6 @@
-import 'card.dart';
+library dartmuti.model.trick;
+
+import 'package:dartmuti/models/card.dart';
 
 class Trick {
   List<Card> cards = [];

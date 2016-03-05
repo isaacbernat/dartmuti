@@ -1,3 +1,5 @@
+library dartmuti.model.card;
+
 class Card {
   final int ID;
   final int value;

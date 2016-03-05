@@ -1,3 +1,5 @@
+library dartmuti.model.player;
+
 class Player {
   String name;
   int endPosition; // FIXME not used ATM
