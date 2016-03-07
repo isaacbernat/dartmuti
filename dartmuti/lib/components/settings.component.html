@@ -5,11 +5,11 @@
   <button (click)="startGame()"> Start Game! </button>
   <h2>Players</h2>
   <ul>
-    <li [ngClass]="{hidden: model.startedGame}" ><input #newPlayer (keyup.enter)="model.addPlayer(newPlayer.value); newPlayer.value=''">
+    <li><input #newPlayer (keyup.enter)="model.addPlayer(newPlayer.value); newPlayer.value=''">
         <button (click)="model.addPlayer(newPlayer.value); newPlayer.value=''">Add</button>
     </li>
-    <li class="players" *ngFor="#player of model.players">
-        <dartmuti-player [model]="player"> Loading players... </dartmuti-player>
+    <li class="players" *ngFor="#name of model.names">
+        {{name}}
     </li>
   </ul>
 </div>

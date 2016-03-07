@@ -7,7 +7,7 @@ import 'package:dartmuti/models/trick.dart';
 import 'package:dartmuti/services/deck.service.dart';
 
 class Tabletop {
-  DeckService DeckService;
+  DeckService DS;
   String name;
   List<Card> deck = [];
   List<Card> discardPile = [];
@@ -15,14 +15,23 @@ class Tabletop {
   List<Player> players = [];
   int currentPlayer = 0;
   bool startedGame = false;
+  int seed = 0;
 
-  Tabletop() {}
+  Tabletop(var seed, DeckService DS, [List<String> playerNames]) {
+    this.DS = DS;
+    if (seed != null) {
+      this.seed = seed.toInt();
+    }
+    for (string name in playerNames) {
+      players.add(new Player(name));
+    }
+  }
 
   void startGame() {
     startedGame = true;
     discardPile = [];
     seed = seed.toInt();
-    deck = DeckService.getDeck();
+    deck = DS.getDeck();
     deck.shuffle(new Random(seed));
     players.shuffle(new Random(seed));
 

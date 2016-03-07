@@ -14,7 +14,10 @@ import 'package:dartmuti/components/settings.component.dart'
     directives: const [ROUTER_DIRECTIVES,])
 @RouteConfig(const [
   const Route(
-      path: '/tabletop', name: 'Tabletop', component: TabletopComponent),
+      path: '/tabletop',
+      name: 'Tabletop',
+      component: TabletopComponent,
+      useAsDefault: true),
   const Route(path: '/settings', name: 'Settings', component: SettingsComponent)
 ])
 class AppComponent {}
