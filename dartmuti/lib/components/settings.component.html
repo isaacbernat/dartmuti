@@ -5,11 +5,11 @@
   <button (click)="startGame()"> Start Game! </button>
   <h2>Players</h2>
   <ul>
-    <li><input #newPlayer (keyup.enter)="model.addPlayer(newPlayer.value); newPlayer.value=''">
-        <button (click)="model.addPlayer(newPlayer.value); newPlayer.value=''">Add</button>
+    <li><input #newName (keyup.enter)="model.addName(newName.value); newName.value=''">
+        <button (click)="model.addName(newName.value); newName.value=''">Add</button>
     </li>
-    <li class="players" *ngFor="#name of model.names">
-        {{name}}
+    <li class="names" *ngFor="#name of model.names; #i=index">
+        {{name}} <button (click)="model.removeName(i)">Remove</button>
     </li>
   </ul>
 </div>

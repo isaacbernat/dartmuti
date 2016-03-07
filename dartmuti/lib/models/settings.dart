@@ -8,10 +8,14 @@ class Settings {
 
   Settings() {}
 
-  void addPlayer(String name) {
+  void addName(String name) {
     if (name?.length > 0) {
       names.add(name);
     }
+  }
+
+  void removeName(int index) {
+    names.removeAt(index);
   }
 
   String toString() =>
