@@ -14,21 +14,23 @@ class Tabletop {
   List<Trick> currentTricks = [];
   List<Player> players = [];
   int currentPlayer = 0;
-  bool startedGame = false;
+  bool gameInProgress = false;
   int seed = 0;
 
-  Tabletop(var seed, DeckService DS, [List<String> playerNames]) {
+  Tabletop(int seed, DeckService DS, List<String> playerNames) {
     this.DS = DS;
     if (seed != null) {
       this.seed = seed.toInt();
     }
-    for (string name in playerNames) {
+    if (playerNames == null) {
+      return;
+    }
+    for (String name in playerNames) {
       players.add(new Player(name));
     }
   }
 
   void startGame() {
-    startedGame = true;
     discardPile = [];
     seed = seed.toInt();
     deck = DS.getDeck();
@@ -46,7 +48,8 @@ class Tabletop {
 
   List<Card> deal(List<Card> deck, List<Player> players) {
     // Exhausts deck
-    int cardsPerPlayer = (deck.length / players.length).toInt();
+    int cardsPerPlayer =
+        players.length == 0 ? 0 : (deck.length / players.length).toInt();
     for (int i = 0; i < players.length; i++) {
       players[i].hand =
           deck.sublist(i * cardsPerPlayer, (i + 1) * cardsPerPlayer);
@@ -57,6 +60,7 @@ class Tabletop {
   }
 
   bool startRound() {
+    gameInProgress = true;
     // returns True if there are still valid moves
     for (var p in players) {
       p.currentTurn = false;

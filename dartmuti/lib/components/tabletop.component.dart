@@ -25,7 +25,7 @@ import 'package:dartmuti/services/deck.service.dart';
 class TabletopComponent {
   Tabletop model;
   TabletopComponent(DeckService DS, RouteParams routeParams) {
-    var seed = routeParams.get('seed');
+    int seed = routeParams.get('seed');
     List<String> playerNames = routeParams.get('names');
     model = new Tabletop(seed, DS, playerNames);
     model.startGame();
