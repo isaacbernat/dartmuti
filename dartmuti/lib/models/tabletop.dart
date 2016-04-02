@@ -119,7 +119,7 @@ class Tabletop {
       }
       currentTricks.add(newTrick);
     } else {
-      print("This trick is not 'powerful' enough to trink the current one");
+      print("This trick is not 'powerful' enough to trump the current one");
       return;
     }
     currentPlayer = nextPlayerPosition();
