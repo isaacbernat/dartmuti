@@ -1,27 +1,39 @@
+library dartmuti.model.tabletop;
+
 import 'dart:math';
-import 'player.dart';
-import 'card.dart';
-import 'trick.dart';
-import 'deck_service.dart';
+import 'package:dartmuti/models/player.dart';
+import 'package:dartmuti/models/card.dart';
+import 'package:dartmuti/models/trick.dart';
+import 'package:dartmuti/services/deck.service.dart';
 
 class Tabletop {
-  DeckService DeckService;
+  DeckService DS;
   String name;
-  int seed = 1337;
   List<Card> deck = [];
   List<Card> discardPile = [];
   List<Trick> currentTricks = [];
   List<Player> players = [];
   int currentPlayer = 0;
-  bool startedGame = false;
+  bool gameInProgress = false;
+  int seed = 0;
 
-  Tabletop() {}
+  Tabletop(int seed, DeckService DS, List<String> playerNames) {
+    this.DS = DS;
+    if (seed != null) {
+      this.seed = seed.toInt();
+    }
+    if (playerNames == null) {
+      return;
+    }
+    for (String name in playerNames) {
+      players.add(new Player(name));
+    }
+  }
 
   void startGame() {
-    startedGame = true;
     discardPile = [];
     seed = seed.toInt();
-    deck = DeckService.getDeck();
+    deck = DS.getDeck();
     deck.shuffle(new Random(seed));
     players.shuffle(new Random(seed));
 
@@ -31,19 +43,13 @@ class Tabletop {
     }
   }
 
-  void addPlayer(String name) {
-    if (name?.length > 0) {
-      players.add(new Player(name));
-    }
-    name = '';
-  }
-
   String toString() =>
       '$name -> trick to beat: $currentTricks.last . $discardPile cards discarded.';
 
   List<Card> deal(List<Card> deck, List<Player> players) {
     // Exhausts deck
-    int cardsPerPlayer = (deck.length / players.length).toInt();
+    int cardsPerPlayer =
+        players.length == 0 ? 0 : (deck.length / players.length).toInt();
     for (int i = 0; i < players.length; i++) {
       players[i].hand =
           deck.sublist(i * cardsPerPlayer, (i + 1) * cardsPerPlayer);
@@ -54,6 +60,7 @@ class Tabletop {
   }
 
   bool startRound() {
+    gameInProgress = true;
     // returns True if there are still valid moves
     for (var p in players) {
       p.currentTurn = false;
@@ -112,7 +119,7 @@ class Tabletop {
       }
       currentTricks.add(newTrick);
     } else {
-      print("This trick is not 'powerful' enough to trink the current one");
+      print("This trick is not 'powerful' enough to trump the current one");
       return;
     }
     currentPlayer = nextPlayerPosition();
@@ -147,10 +154,5 @@ class Tabletop {
 
   int countCards() {
     return discardPile.length + countCardsPlayers() + countCardsTricks();
-  }
-
-  void randomiseSeed() {
-    var r = new Random();
-    seed = r.nextInt(65535);
   }
 }

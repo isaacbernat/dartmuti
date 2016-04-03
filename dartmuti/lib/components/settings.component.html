@@ -1,0 +1,15 @@
+<div class="container">
+  <label>Seed</label>
+  <input type="number" [(ngModel)]="model.seed">
+  <button (click)="model.randomiseSeed()"> Randomise seed </button>
+  <button (click)="startGame()"> Start Game! </button>
+  <h2>Players</h2>
+  <ul>
+    <li><input #newName (keyup.enter)="model.addName(newName.value); newName.value=''">
+        <button (click)="model.addName(newName.value); newName.value=''">Add</button>
+    </li>
+    <li class="names" *ngFor="#name of model.names; #i=index">
+        {{name}} <button (click)="model.removeName(i)">Remove</button>
+    </li>
+  </ul>
+</div>

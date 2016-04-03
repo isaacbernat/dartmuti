@@ -5,6 +5,8 @@ The previous is based on [President](https://en.wikipedia.org/wiki/President_(ca
 also known by the names of *Capitalism* and *Asshole* among others.
 And this game shares many similarities with [Dai Hin Min](https://en.wikipedia.org/w/index.php?title=Dai_Hin_Min) which in turn resembles other games as well.
 
+A WIP version may be tried live [here](http://isaacbernat.github.io/dartmuti/).
+
 ## Why
 To try the beta of [AngularJS 2](https://angular.io/) out from scratch.
 More specifically the [Dart](https://www.dartlang.org/) implementation of said framework.
@@ -21,17 +23,19 @@ A playful light card game seemed fit for the project.
 2. Get all dependencies
   - `pub get`
 
-3. Serve the files within `dartium` directory (any HTTP server should work)
-  - `python -m SimpleHTTPServer`
+3. Serve the files within `dartmuti/dartmuti/web` directory (any HTTP server should work)
+  - `python -m SimpleHTTPServer 8080`
 
-4. Navigate it through!
+4. Open the browser
   - Open `dartium`
-  - Go to `http://0.0.0.0:8000/web/` by default
   - Also check out [Observatory](https://dart-lang.github.io/observatory/)
+  - Opening the console will show you which url is running on.
 
-5. **If you don't want Dartium...**
-  - You may skip steps 3 and 4. Just type `pub serve` instead.
-  - By default, type `http://localhost:8080` in your browser navigation bar.
+5. Navigate it through!
+  - Go to `http://0.0.0.0:8080/`
+
+6. **If you don't want Dartium...**
+  - You may skip steps 3 and 4. Just type `pub serve` instead (from `dartmuti/dartmuti`).
   - It will be slower, as it needs to compile the Dart code into JavaScript...
 
 ### Contributing
@@ -42,7 +46,7 @@ you push to the repository, to get nice formatting.
 #### TODOs
 In no specific order:
 
-- Refactor tabletop.dart
+- Refactor (esp. tabletop.dart)
 - Port stylesheet to SASS and clean it up.
 - GUI/UX improvements.
 - Artwork + style improvements.
@@ -55,6 +59,11 @@ In no specific order:
 - etc.
 
 ### Versions
+#### 0.1.1
+- Remove players
+- Settings tab to more easily configure gameplay
+- Minor style improvements
+
 #### 0.1.0
 - Add as many players as you want
 - Support for the basic 80 card deck (minus 2 jokers)
