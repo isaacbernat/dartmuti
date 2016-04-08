@@ -4,6 +4,7 @@ import 'dart:math';
 
 class Settings {
   int seed = 1337;
+  int turnTime;
   Map<String, String> playerConfigs = {};
 
   Settings() {}

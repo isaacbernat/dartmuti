@@ -21,7 +21,11 @@ class SettingsComponent {
   void startGame() {
     _router.navigate([
       'Tabletop',
-      {'seed': model.seed, 'player_configs': model.playerConfigs}
+      {
+        'seed': model.seed,
+        'turn_time': model.turnTime,
+        'player_configs': model.playerConfigs
+      }
     ]);
   }
 }
