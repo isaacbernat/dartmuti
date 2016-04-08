@@ -23,7 +23,7 @@ class SettingsComponent {
       'Tabletop',
       {
         'seed': model.seed,
-        'turn_time': model.turnTime,
+        'turn_time': model.turnTime || 0,
         'player_configs': model.playerConfigs
       }
     ]);
