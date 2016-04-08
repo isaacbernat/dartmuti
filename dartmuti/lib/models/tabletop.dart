@@ -1,6 +1,8 @@
 library dartmuti.model.tabletop;
 
 import 'dart:math';
+import 'dart:html';
+import 'dart:convert';
 import 'package:dartmuti/models/player.dart';
 import 'package:dartmuti/models/card.dart';
 import 'package:dartmuti/models/trick.dart';
@@ -37,8 +39,17 @@ class Tabletop {
     players.shuffle(new Random(seed));
 
     discardPile = deal(deck, players);
+    int currentPosition = 0;
     for (var p in players) {
       p.sortHand();
+      var payload = {
+        "init_state": {
+          "number_of_players": players.length,
+          "player_position": currentPosition++,
+          "hand": p.getHandValues()
+        }
+      };
+      deliverRemoteInfo(p, payload);
     }
   }
 
@@ -56,6 +67,16 @@ class Tabletop {
     List<Card> remainder = deck.sublist(players.length * cardsPerPlayer);
     deck.removeRange(0, deck.length);
     return remainder;
+  }
+
+  void deliverRemoteInfo(Player p, var payload) {
+      if (p.baseURL == '') {
+        return;
+      }
+      // TODO implement the CORS thingie on the server end
+      HttpRequest request = new HttpRequest();
+      request.open("POST", p.baseURL + "/init" , async: false);
+      request.send(JSON.encode(payload)); // perform the async POST
   }
 
   bool startRound() {

@@ -20,5 +20,13 @@ class Player {
     hand.sort((a, b) => a.value - b.value);
   }
 
+  List<int> getHandValues() {
+    List<int> values = [];
+    for (var card in hand) {
+      values.add(card.value);
+    }
+    return values;
+  }
+
   String toString() => '$ID: $name ($hand.length cards)';
 }
