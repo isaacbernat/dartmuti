@@ -2,13 +2,15 @@ library dartmuti.model.player;
 
 class Player {
   String name;
+  String baseURL;
   int endPosition; // FIXME not used ATM
   bool currentTurn;
   bool hasPassed;
   List<Card> hand = [];
 
-  Player(String name) {
+  Player(String name, String baseURL) {
     this.name = name;
+    this.baseURL = baseURL;
     this.hand = [];
     this.currentTurn = false;
     this.hasPassed = false;

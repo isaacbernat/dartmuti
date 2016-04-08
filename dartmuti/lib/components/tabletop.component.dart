@@ -26,8 +26,8 @@ class TabletopComponent {
   Tabletop model;
   TabletopComponent(DeckService DS, RouteParams routeParams) {
     int seed = routeParams.get('seed');
-    List<String> playerNames = routeParams.get('names');
-    model = new Tabletop(seed, DS, playerNames);
+    Map<String, String> playerConfigs = routeParams.get('player_configs');
+    model = new Tabletop(seed, DS, playerConfigs);
     model.startGame();
   }
 }

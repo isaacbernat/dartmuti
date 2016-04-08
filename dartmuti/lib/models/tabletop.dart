@@ -17,17 +17,16 @@ class Tabletop {
   bool gameInProgress = false;
   int seed = 0;
 
-  Tabletop(int seed, DeckService DS, List<String> playerNames) {
+  Tabletop(int seed, DeckService DS, Map<String, String> playerConfigs) {
     this.DS = DS;
     if (seed != null) {
       this.seed = seed.toInt();
     }
-    if (playerNames == null) {
+    if (playerConfigs == null) {
       return;
     }
-    for (String name in playerNames) {
-      players.add(new Player(name));
-    }
+    playerConfigs
+        .forEach((name, baseURL) => players.add(new Player(name, baseURL)));
   }
 
   void startGame() {

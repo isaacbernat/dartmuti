@@ -21,7 +21,7 @@ class SettingsComponent {
   void startGame() {
     _router.navigate([
       'Tabletop',
-      {'seed': model.seed, 'names': model.names}
+      {'seed': model.seed, 'player_configs': model.playerConfigs}
     ]);
   }
 }
