@@ -4,6 +4,7 @@ class Player {
   String name;
   String baseURL;
   int endPosition; // FIXME not used ATM
+  int currentPosition;
   bool currentTurn;
   bool hasPassed;
   List<Card> hand = [];
@@ -11,6 +12,7 @@ class Player {
   Player(String name, String baseURL) {
     this.name = name;
     this.baseURL = baseURL;
+    this.currentPosition = -1;
     this.hand = [];
     this.currentTurn = false;
     this.hasPassed = false;
@@ -22,10 +24,26 @@ class Player {
 
   List<int> getHandValues() {
     List<int> values = [];
-    for (var card in hand) {
-      values.add(card.value);
+    for (Card c in hand) {
+      values.add(c.value);
     }
     return values;
+  }
+
+  List<Card> getSelectedCards() {
+    List<Card> selectedCards = [];
+    for (Card c in hand) {
+      if (c.selected) {
+        selectedCards.add(c);
+      }
+    }
+    return selectedCards;
+  }
+
+  void removeCards(List<Card> cards) {
+    for (Card c in cards) {
+      hand.remove(c);
+    }
   }
 
   String toString() => '$ID: $name ($hand.length cards)';
