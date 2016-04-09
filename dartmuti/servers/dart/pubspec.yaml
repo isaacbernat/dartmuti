@@ -1,0 +1,5 @@
+name: dartmuti_sample_server
+description: simple dart server to test out dartmuti Dalmuti
+version: 0.1.0
+environment:
+  sdk: '>=1.13.0 <2.0.0'

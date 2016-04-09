@@ -1,7 +1,8 @@
 import 'dart:io';
+import 'dart:async';
 import 'dart:convert';
 
-final HOST = "127.0.0.1"; // eg: localhost
+final HOST = InternetAddress.LOOPBACK_IP_V4; // eg: localhost
 final PORT = 8081;
 
 Map state = {};
@@ -24,11 +25,19 @@ void main() {
   }, onError: printError);
 }
 
-void handlePost(HttpRequest req, HttpResponse res) {
+void handlePost(HttpRequest req, HttpResponse res) async {
   Future<String> content = UTF8.decodeStream(req).then((data) {
-    state = JSON.decode(data)["init_state"];
+    state = JSON.decode(data)["state"];
+    res.write(JSON.encode(actionResponse));
+    res.close();
   });
-  res.close();
+}
+
+void actionResponse() {
+  if (state["you"]["position"] != state["global"]["current_player"]) {
+    return {}; // not your turn
+  }
+  return {"action": "pass"};
 }
 
 void defaultHandler(HttpRequest req, HttpResponse res) {

@@ -70,8 +70,16 @@ class Tabletop {
         continue;
       }
       HttpRequest request = new HttpRequest();
-      request.open("POST", p.baseURL + "/state", async: false);
-      request.send(JSON.encode(getState(p.position))); // perform the async POST
+      request.open("POST", p.baseURL + "/state", async: true);
+      request.send(JSON.encode(getState(p.position)));
+      if (p.position == currentPlayer) {
+        request.onReadyStateChange.listen((data) {
+          if (request.readyState != HttpRequest.DONE || request.status != 200) {
+            return;
+          }
+          print('Server Says: ' + request.responseText);
+        });
+      }
     }
   }
 
