@@ -41,29 +41,10 @@ class Tabletop {
     discardPile = deal(deck, players);
     int currentPosition = 0;
     for (var p in players) {
-      p.currentPosition = currentPosition++;
+      p.position = currentPosition++;
       p.sortHand();
-      var payload = {
-        "init_state": {
-          "number_of_players": players.length,
-          "player_position": p.currentPosition,
-          "hand": p.getHandValues()
-        }
-      };
-      deliverRemoteInfo(p, payload);
     }
-  }
-
-  Map getState() {
-    Map playerStates = [];
-    for (var p in players) {
-      playerStates.add({
-        "position": p.currentPosition,
-        "cards_remaining": p.hand.length,
-        "has_passed": p.hasPassed,
-      });
-    }
-    return {"state": playerStates};
+    deliverRemoteInfo();
   }
 
   String toString() =>
@@ -82,19 +63,50 @@ class Tabletop {
     return remainder;
   }
 
-  void deliverRemoteInfo(Player p, var payload) {
-    if (p.baseURL == '') {
-      return;
-    }
+  void deliverRemoteInfo() {
     // TODO implement the CORS thingie on the server end
-    HttpRequest request = new HttpRequest();
-    request.open("POST", p.baseURL + "/init", async: false);
-    request.send(JSON.encode(payload)); // perform the async POST
+    for (Player p in players) {
+      if (p.baseURL == '') {
+        continue;
+      }
+      HttpRequest request = new HttpRequest();
+      request.open("POST", p.baseURL + "/state", async: false);
+      request.send(JSON.encode(getState(p.position))); // perform the async POST
+    }
+  }
+
+  Map getState(int position) {
+    var state = {
+      "global": {
+        "current_player": currentPlayer,
+        "discard_pile": discardPile.length,
+        "players": players.length,
+        "tricks": [],
+      },
+      "you": {},
+      "players": [],
+    };
+    for (Player p in players) {
+      state["players"].add({
+        "name": p.name,
+        "position": p.position,
+        "cards_remaining": p.hand.length,
+        "has_passed": p.hasPassed,
+      });
+      if (p.position == position) {
+        state["you"] = {"position": position, "hand": p.getHandValues()};
+      }
+    }
+    for (Trick t in currentTricks) {
+      state["global"]["tricks"].append(
+          {"value": t.cardValue, "cards": cards.length, "player": t.player});
+    }
+    return {"state": state};
   }
 
   bool startRound() {
     gameInProgress = true;
-    // returns True if there are still valid moves
+    // TODO: returns True if there are still valid moves
     for (var p in players) {
       p.currentTurn = false;
       p.hasPassed = false;
@@ -131,7 +143,7 @@ class Tabletop {
     List<Card> selectedCards = p.getSelectedCards();
     Trick newTrick;
     try {
-      newTrick = new Trick(selectedCards);
+      newTrick = new Trick(selectedCards, playerPosition);
     } catch (e) {
       print("You can't form a Trick with these cards!");
       return false;

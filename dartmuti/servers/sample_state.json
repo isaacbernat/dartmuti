@@ -1,0 +1,41 @@
+{
+   "state": {
+      "global": {
+         "current_player": 0,
+         "discard_pile": 2,
+         "players": 4,
+         "tricks": []
+      },
+      "you": {
+         "position": 3,
+         "hand": [
+            2, 2, 3, 5, 5, 6, 6, 8, 9, 9, 9, 9, 10, 10, 11, 11, 11, 12, 12]
+      },
+      "players": [
+         {
+            "name": "jeanne dart",
+            "position": 0,
+            "cards_remaining": 19,
+            "has_passed": false
+         },
+         {
+            "name": "dart agnan",
+            "position": 1,
+            "cards_remaining": 19,
+            "has_passed": false
+         },
+         {
+            "name": "objet dart",
+            "position": 2,
+            "cards_remaining": 19,
+            "has_passed": false
+         },
+         {
+            "name": "dart vader",
+            "position": 3,
+            "cards_remaining": 19,
+            "has_passed": false
+         }
+      ]
+   }
+}

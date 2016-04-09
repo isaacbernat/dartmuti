@@ -4,9 +4,7 @@ import 'dart:convert';
 final HOST = "127.0.0.1"; // eg: localhost
 final PORT = 8081;
 
-int numberOfPlayers = 0;
-int position = -1;
-List <int> cardValues = 0;
+Map state = {};
 
 void main() {
   HttpServer.bind(HOST, PORT).then((server) {
@@ -18,22 +16,18 @@ void main() {
         case "POST":
           handlePost(request, res);
           break;
-        default: defaultHandler(request, res);
+        default:
+          defaultHandler(request, res);
       }
-    },
-    onError: printError);
+    }, onError: printError);
     print("Listening on http://$HOST:$PORT");
-  },
-  onError: printError);
+  }, onError: printError);
 }
 
 void handlePost(HttpRequest req, HttpResponse res) {
   Future<String> content = UTF8.decodeStream(req).then((data) {
-    Map initState = JSON.decode(data)["init_state"];
-    numberOfPlayers = initState["number_of_players"];
-    position = initState["player_position"];
-    cardValues = initState["hand"];
-    });
+    state = JSON.decode(data)["init_state"];
+  });
   res.close();
 }
 
@@ -56,5 +50,6 @@ void printError(error) => print(error);
 void addCorsHeaders(HttpResponse res) {
   res.headers.add("Access-Control-Allow-Origin", "*");
   res.headers.add("Access-Control-Allow-Methods", "POST, GET, OPTIONS");
-  res.headers.add("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  res.headers.add("Access-Control-Allow-Headers",
+      "Origin, X-Requested-With, Content-Type, Accept");
 }
