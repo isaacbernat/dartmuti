@@ -87,6 +87,55 @@ Players are ranked according to their finishing order (e.g. 1st, 3rd, etc.)
   - You may skip steps 3 and 4. Just type `pub serve` instead (from `dartmuti/dartmuti`).
   - It will be slower, as it needs to compile the Dart code into JavaScript...
 
+### Remote players (bots)
+#### Test a remote player
+- Run the sample server in a terminal:
+  - Go to `dartmuti/dartmuti/servers/dart`
+  - Type `dart sample_server.dart`
+- Add the bot:
+  - Run Dartmuti locally (as stated in *Setup*).
+  - Open it on a web browser.
+  - Click the *settings* tab.
+  - Add a player with a base URL set. E.g. `http://127.0.0.1:8081`.
+  - Add some other normal players.
+- Try it out:
+  - Click start game.
+  - The bot will always `pass` when it is it's turn.
+
+#### Your own remote player
+- Make sure you browser and server are properly configured. You can find CORS information [here](http://www.html5rocks.com/en/tutorials/cors/) and [there](http://enable-cors.org/server.html).
+- Your server will receive a `POST` call to `YourSuppliedBaseURL/state` every turn.
+
+##### Request
+The request provides game state information available to that player. A sample JSON is provided [here](https://github.com/isaacbernat/dartmuti/blob/master/dartmuti/servers/sample_state.json). A description follows:
+
+###### General
+General information of the current game state.
+- **current_player**: position of whose turn it is.
+- **discard_pile**: how many cards are in the discard pile.
+- **players**: how many players are in the game.
+- **tricks**: current tricks player in this round, from old to new.
+    - **value**: card numeric value of the trick.
+    - **cards**: how many cards is the trick made of.
+    - **player**: who played that trick.
+
+###### You
+Information of your player state.
+- **position**: your starting position. If it matches `current_player` in `general` it means is your turn.
+- **hand**: list of sorted card values on your hand.
+
+###### Players
+List of player state information available to everybody.
+- **name**: player chosen name.
+- **position**: starting position.
+- **cards_remaining**: number of cards in their hand.
+- **has_passed**: true if the player has passed this round.
+
+##### Response
+Sample valid responses:
+- Pass `{"action": "pass"}`
+- Play `{"action": "play", "card_positions": [4, 5]}`
+
 ### Contributing
 Apply [dartfmt](https://github.com/dart-lang/dart_style) to your code before
 you push to the repository, to get nice formatting.

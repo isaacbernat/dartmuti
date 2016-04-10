@@ -102,7 +102,7 @@ class Tabletop {
 
   Map getState(int position) {
     var state = {
-      "global": {
+      "general": {
         "current_player": currentPlayer,
         "discard_pile": discardPile.length,
         "players": players.length,
@@ -123,7 +123,7 @@ class Tabletop {
       }
     }
     for (Trick t in currentTricks) {
-      state["global"]["tricks"].add(
+      state["general"]["tricks"].add(
           {"value": t.cardValue, "cards": t.cards.length, "player": t.player});
     }
     return {"state": state};
