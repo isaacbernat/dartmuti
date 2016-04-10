@@ -77,7 +77,24 @@ class Tabletop {
           if (request.readyState != HttpRequest.DONE || request.status != 200) {
             return;
           }
-          print('Server Says: ' + request.responseText);
+          Map res = JSON.decode(request.responseText);
+          switch (res["action"]) {
+            case "pass":
+              passTurn(p.position);
+              break;
+            case "play":
+              if (p.setCardsSelected(res["card_positions"], true)) {
+                if (playTrick(p.position)) {
+                  break;
+                }
+                p.setCardsSelected(res["card_positions"], false);
+              }
+              passTurn(p.position);
+              break;
+            default:
+              print("Not acceptable response. Turn skipped.");
+              passTurn(p.position);
+          }
         });
       }
     }
@@ -106,8 +123,8 @@ class Tabletop {
       }
     }
     for (Trick t in currentTricks) {
-      state["global"]["tricks"].append(
-          {"value": t.cardValue, "cards": cards.length, "player": t.player});
+      state["global"]["tricks"].add(
+          {"value": t.cardValue, "cards": t.cards.length, "player": t.player});
     }
     return {"state": state};
   }
@@ -126,19 +143,22 @@ class Tabletop {
       }
     }
     currentTricks = [];
+    deliverRemoteInfo();
   }
 
   bool passTurn(int position) {
-    for (var c in players[position].hand) {
+    Player p = players[position];
+    for (var c in p.hand) {
       c.selected = false;
     }
-    players[position].currentTurn = false;
-    players[position].hasPassed = true;
+    p.currentTurn = false;
+    p.hasPassed = true;
     currentPlayer = nextPlayerPosition();
     if (currentPlayer == nextPlayerPosition()) {
       startRound();
       return false;
     }
+    deliverRemoteInfo();
     return true;
   }
 
@@ -170,6 +190,7 @@ class Tabletop {
     currentTricks.add(newTrick);
     p.currentTurn = false;
     currentPlayer = nextPlayerPosition();
+    deliverRemoteInfo();
     return true;
   }
 

@@ -28,7 +28,7 @@ void main() {
 void handlePost(HttpRequest req, HttpResponse res) async {
   Future<String> content = UTF8.decodeStream(req).then((data) {
     state = JSON.decode(data)["state"];
-    res.write(JSON.encode(actionResponse));
+    res.write(JSON.encode(actionResponse()));
     res.close();
   });
 }

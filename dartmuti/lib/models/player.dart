@@ -30,6 +30,18 @@ class Player {
     return values;
   }
 
+  bool setCardsSelected(List<int> positions, bool selectedFlag) {
+    for (int p in positions) {
+      if (p < 0 || p >= hand.length) {
+        return false;
+      }
+    }
+    for (int p in positions) {
+      hand[p].selected = selectedFlag;
+    }
+    return true;
+  }
+
   List<Card> getSelectedCards() {
     List<Card> selectedCards = [];
     for (Card c in hand) {
