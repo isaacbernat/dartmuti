@@ -3,13 +3,18 @@
   <input type="number" [(ngModel)]="model.seed">
   <button (click)="model.randomiseSeed()"> Randomise seed </button>
   <button (click)="startGame()"> Start Game! </button>
+  <br />
+  <label>Max turn time</label>
+  <input placeholder="Not implemented yet" type="number" [(ngModel)]="model.turnTime"> seconds
   <h2>Players</h2>
   <ul>
-    <li><input #newName (keyup.enter)="model.addName(newName.value); newName.value=''">
-        <button (click)="model.addName(newName.value); newName.value=''">Add</button>
+    <li>
+      <input placeholder="Name" #newName (keyup.enter)="model.addPlayer(newName, newBaseURL);">
+      <input placeholder="Base URL (optional)" #newBaseURL (keyup.enter)="model.addPlayer(newName, newBaseURL);">
+      <button (click)="model.addPlayer(newName, newBaseURL);">Add</button>
     </li>
-    <li class="names" *ngFor="#name of model.names; #i=index">
-        {{name}} <button (click)="model.removeName(i)">Remove</button>
+    <li class="names" *ngFor="#name of model.playerConfigs.keys">
+        {{name}} <i>@ {{model.playerConfigs[name]}}</i> <button (click)="model.playerConfigs.remove(name)">Remove</button>
     </li>
   </ul>
 </div>

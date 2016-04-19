@@ -4,22 +4,19 @@ import 'dart:math';
 
 class Settings {
   int seed = 1337;
-  List<String> names = [];
+  int turnTime;
+  Map<String, String> playerConfigs = {};
 
   Settings() {}
 
-  void addName(String name) {
+  void addPlayer(nameInput, baseURLInput) {
+    String name = nameInput.value;
     if (name?.length > 0) {
-      names.add(name);
+      playerConfigs[name] = baseURLInput.value;
+      baseURLInput.value = "";
+      nameInput.value = "";
     }
   }
-
-  void removeName(int index) {
-    names.removeAt(index);
-  }
-
-  String toString() =>
-      '$name -> trick to beat: $currentTricks.last . $discardPile cards discarded.';
 
   void randomiseSeed() {
     var r = new Random();

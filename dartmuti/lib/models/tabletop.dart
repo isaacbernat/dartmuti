@@ -1,6 +1,8 @@
 library dartmuti.model.tabletop;
 
 import 'dart:math';
+import 'dart:html';
+import 'dart:convert';
 import 'package:dartmuti/models/player.dart';
 import 'package:dartmuti/models/card.dart';
 import 'package:dartmuti/models/trick.dart';
@@ -17,17 +19,16 @@ class Tabletop {
   bool gameInProgress = false;
   int seed = 0;
 
-  Tabletop(int seed, DeckService DS, List<String> playerNames) {
+  Tabletop(int seed, DeckService DS, Map<String, String> playerConfigs) {
     this.DS = DS;
     if (seed != null) {
       this.seed = seed.toInt();
     }
-    if (playerNames == null) {
+    if (playerConfigs == null) {
       return;
     }
-    for (String name in playerNames) {
-      players.add(new Player(name));
-    }
+    playerConfigs
+        .forEach((name, baseURL) => players.add(new Player(name, baseURL)));
   }
 
   void startGame() {
@@ -38,9 +39,12 @@ class Tabletop {
     players.shuffle(new Random(seed));
 
     discardPile = deal(deck, players);
+    int currentPosition = 0;
     for (var p in players) {
+      p.position = currentPosition++;
       p.sortHand();
     }
+    deliverRemoteInfo();
   }
 
   String toString() =>
@@ -59,9 +63,75 @@ class Tabletop {
     return remainder;
   }
 
+  void deliverRemoteInfo() {
+    // TODO implement the CORS thingie on the server end
+    for (Player p in players) {
+      if (p.baseURL == '') {
+        continue;
+      }
+      HttpRequest request = new HttpRequest();
+      request.open("POST", p.baseURL + "/state", async: true);
+      request.send(JSON.encode(getState(p.position)));
+      if (p.position == currentPlayer) {
+        request.onReadyStateChange.listen((data) {
+          if (request.readyState != HttpRequest.DONE || request.status != 200) {
+            return;
+          }
+          Map res = JSON.decode(request.responseText);
+          switch (res["action"]) {
+            case "pass":
+              passTurn(p.position);
+              break;
+            case "play":
+              if (p.setCardsSelected(res["card_positions"], true)) {
+                if (playTrick(p.position)) {
+                  break;
+                }
+                p.setCardsSelected(res["card_positions"], false);
+              }
+              passTurn(p.position);
+              break;
+            default:
+              print("Not acceptable response. Turn skipped.");
+              passTurn(p.position);
+          }
+        });
+      }
+    }
+  }
+
+  Map getState(int position) {
+    var state = {
+      "general": {
+        "current_player": currentPlayer,
+        "discard_pile": discardPile.length,
+        "players": players.length,
+        "tricks": [],
+      },
+      "you": {},
+      "players": [],
+    };
+    for (Player p in players) {
+      state["players"].add({
+        "name": p.name,
+        "position": p.position,
+        "cards_remaining": p.hand.length,
+        "has_passed": p.hasPassed,
+      });
+      if (p.position == position) {
+        state["you"] = {"position": position, "hand": p.getHandValues()};
+      }
+    }
+    for (Trick t in currentTricks) {
+      state["general"]["tricks"].add(
+          {"value": t.cardValue, "cards": t.cards.length, "player": t.player});
+    }
+    return {"state": state};
+  }
+
   bool startRound() {
     gameInProgress = true;
-    // returns True if there are still valid moves
+    // TODO: returns True if there are still valid moves
     for (var p in players) {
       p.currentTurn = false;
       p.hasPassed = false;
@@ -73,19 +143,22 @@ class Tabletop {
       }
     }
     currentTricks = [];
+    deliverRemoteInfo();
   }
 
   bool passTurn(int position) {
-    for (var c in players[position].hand) {
+    Player p = players[position];
+    for (var c in p.hand) {
       c.selected = false;
     }
-    players[position].currentTurn = false;
-    players[position].hasPassed = true;
+    p.currentTurn = false;
+    p.hasPassed = true;
     currentPlayer = nextPlayerPosition();
-    if (currentPlayer == position) {
+    if (currentPlayer == nextPlayerPosition()) {
       startRound();
       return false;
     }
+    deliverRemoteInfo();
     return true;
   }
 
@@ -94,40 +167,30 @@ class Tabletop {
   }
 
   bool playTrick(int playerPosition) {
-    List<Card> selectedCards = [];
+    Player p = players[playerPosition];
+    List<Card> selectedCards = p.getSelectedCards();
     Trick newTrick;
-    for (var c in players[playerPosition].hand) {
-      if (c.selected) {
-        selectedCards.add(c);
-      }
-    }
     try {
-      newTrick = new Trick(selectedCards);
+      newTrick = new Trick(selectedCards, playerPosition);
     } catch (e) {
       print("You can't form a Trick with these cards!");
-      return;
-    }
-    if (currentTricks.length == 0 ||
-        newTrick.beats(currentTricks[currentTricks.length - 1])) {
-      for (var c in selectedCards) {
-        players[playerPosition].hand.remove(c);
-      }
-      if (currentTricks.length > 0) {
-        for (var c in currentTricks[currentTricks.length - 1].cards) {
-          c.selected = false;
-        }
-      }
-      currentTricks.add(newTrick);
-    } else {
-      print("This trick is not 'powerful' enough to trump the current one");
-      return;
-    }
-    currentPlayer = nextPlayerPosition();
-    if (currentPlayer == playerPosition) {
-      startRound();
       return false;
     }
-    players[playerPosition].currentTurn = false;
+    if (currentTricks.length > 0 && !newTrick.beats(currentTricks.last)) {
+      print("This trick is not 'powerful' enough to beat the current one");
+      return false;
+    }
+
+    p.removeCards(selectedCards);
+    if (currentTricks.length > 0) {
+      for (var c in currentTricks.last.cards) {
+        c.selected = false;
+      }
+    }
+    currentTricks.add(newTrick);
+    p.currentTurn = false;
+    currentPlayer = nextPlayerPosition();
+    deliverRemoteInfo();
     return true;
   }
 

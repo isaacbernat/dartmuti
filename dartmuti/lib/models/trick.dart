@@ -5,8 +5,9 @@ import 'package:dartmuti/models/card.dart';
 class Trick {
   List<Card> cards = [];
   int cardValue;
+  int player;
 
-  Trick(List<Card> trickCards) {
+  Trick(List<Card> trickCards, int playerPosition) {
     if (trickCards.length == 0) {
       throw new Exception('tricks must have at least 1 card');
     }
@@ -17,6 +18,7 @@ class Trick {
       }
     }
     cards = trickCards;
+    player = playerPosition;
   }
 
   String toString() => '$cards';
