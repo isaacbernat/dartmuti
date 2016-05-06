@@ -3,7 +3,9 @@
   <ul class="tricks">
     <li *ngIf="model.players.length == 0"> Go to <a [routerLink]="['Settings']">Settings</a> to add players and start playing!</li>
     <li> The game uuid is {{model.gameID}}</li>
-    <li *ngIf="model.players.length > 0 && !model.gameInProgress"> The game is over!</li>
+    <li *ngIf="model.players.length > 0 && !model.gameInProgress"> The game is over!
+      <button (click)="restartGame()"> Restart game </button>
+    </li>
     <li *ngIf="model.players.length > 0"> It's {{model.players[model.currentPlayer].name}} turn
       <button (click)="model.passTurn(model.currentPlayer)"> Pass </button>
       <button *ngIf="!model.players[model.currentPlayer].currentTurn" (click)="model.playTurn(model.currentPlayer)"> Accept </button>

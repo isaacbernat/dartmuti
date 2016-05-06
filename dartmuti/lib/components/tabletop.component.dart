@@ -1,5 +1,7 @@
 library dartmuti.component.tabletop;
 
+import 'dart:math';
+
 import 'package:angular2/angular2.dart';
 import 'package:angular2/router.dart' show ROUTER_DIRECTIVES, RouteParams;
 
@@ -25,9 +27,16 @@ import 'package:dartmuti/services/deck.service.dart';
 class TabletopComponent {
   Tabletop model;
   TabletopComponent(DeckService DS, RouteParams routeParams) {
-    int seed = routeParams.get('seed');
     Map<String, String> playerConfigs = routeParams.get('player_configs');
-    model = new Tabletop(seed, DS, playerConfigs);
-    model.startGame();
+    model = new Tabletop(DS, playerConfigs);
+    var seed = routeParams.get('seed');
+    seed = seed == null ? 0 : seed.toInt();
+    model.startGame(seed);
+  }
+
+  void restartGame() {
+    var r = new Random();
+    int seed = r.nextInt(16777216);
+    model.startGame(seed);
   }
 }

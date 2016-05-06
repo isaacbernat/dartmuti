@@ -3,7 +3,9 @@ library dartmuti.model.tabletop;
 import 'dart:math';
 import 'dart:html';
 import 'dart:convert';
+
 import 'package:uuid/uuid.dart';
+
 import 'package:dartmuti/models/player.dart';
 import 'package:dartmuti/models/card.dart';
 import 'package:dartmuti/models/trick.dart';
@@ -18,14 +20,10 @@ class Tabletop {
   List<Player> players = [];
   int currentPlayer = 0;
   bool gameInProgress = false;
-  int seed = 0;
   String gameID = '';
 
-  Tabletop(int seed, DeckService DS, Map<String, String> playerConfigs) {
+  Tabletop(DeckService DS, Map<String, String> playerConfigs) {
     this.DS = DS;
-    if (seed != null) {
-      this.seed = seed.toInt();
-    }
     if (playerConfigs == null) {
       return;
     }
@@ -33,12 +31,11 @@ class Tabletop {
         .forEach((name, baseURL) => players.add(new Player(name, baseURL)));
   }
 
-  void startGame() {
+  void startGame(int seed) {
     var uuid = new Uuid();
     gameID = uuid.v1();
     gameInProgress = true;
     discardPile = [];
-    seed = seed.toInt();
     deck = DS.getDeck();
     deck.shuffle(new Random(seed));
     players.shuffle(new Random(seed));
