@@ -105,7 +105,7 @@ Players are ranked according to their finishing order (e.g. 1st, 3rd, etc.)
 #### Your own remote player
 - Make sure your browser and server are properly configured. You can find CORS information [here](http://www.html5rocks.com/en/tutorials/cors/) and [there](http://enable-cors.org/server.html).
 - Your server will receive a `POST` call to `YourSuppliedBaseURL/state` every turn.
-- You may start by editing the `actionResponse` function in the [sample server](https://github.com/isaacbernat/dartmuti/blob/master/dartmuti/servers/dart/sample_server.dart).
+- You may start by editing `actionResponse` ([dart sample server](https://github.com/isaacbernat/dartmuti/blob/master/dartmuti/servers/dart/sample_server.dart)) or `action_response` [python sample server](https://github.com/isaacbernat/dartmuti/blob/master/dartmuti/servers/python/sample_server.py). Alternatively, you may write your own server from scratch.
 
 ##### Request
 The request provides game state information available to that player. A sample JSON is provided [here](https://github.com/isaacbernat/dartmuti/blob/master/dartmuti/servers/sample_state.json). A description follows:
@@ -129,6 +129,7 @@ Information of your player state.
 List of player state information available to everybody.
 - **name**: player chosen name.
 - **position**: starting position.
+- **end_position**: position in which a player finished. 0 means still playing.
 - **cards_remaining**: number of cards in their hand.
 - **has_passed**: true if the player has passed this round.
 
@@ -150,7 +151,6 @@ In no specific order:
 - Artwork + style improvements.
 - More customisable logic (e.g. decks, comparison rules, support jokers).
 - Responsive design.
-- Sample AI to play using this API.
 - Central server to take care of all API calls to remote players, CORS, etc.
 - Refactor (you didn't expect that one, did you?).
 - Tests.
@@ -160,6 +160,7 @@ In no specific order:
 ### Versions
 #### 0.1.3
 - Add endgame position
+- Sample remote player server written in python
 
 #### 0.1.2
 - Add game play instructions

@@ -64,7 +64,6 @@ class Tabletop {
   }
 
   void deliverRemoteInfo() {
-    // TODO implement the CORS thingie on the server end
     for (Player p in players) {
       if (p.baseURL == '') {
         continue;
