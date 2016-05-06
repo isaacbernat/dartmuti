@@ -34,10 +34,13 @@ void handlePost(HttpRequest req, HttpResponse res) async {
 }
 
 void actionResponse() {
-  if (state["you"]["position"] != state["global"]["current_player"]) {
+  if (state["you"]["position"] != state["general"]["current_player"]) {
     return {}; // not your turn
   }
-  return {"action": "pass"};
+  return {
+    "action": "play",
+    "card_positions": [0]
+  };
 }
 
 void defaultHandler(HttpRequest req, HttpResponse res) {

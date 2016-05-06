@@ -100,11 +100,12 @@ Players are ranked according to their finishing order (e.g. 1st, 3rd, etc.)
   - Add some other normal players.
 - Try it out:
   - Click start game.
-  - The bot will always `pass` when it is it's turn.
+  - The bot will always try to play it's first card when it is it's turn.
 
 #### Your own remote player
-- Make sure you browser and server are properly configured. You can find CORS information [here](http://www.html5rocks.com/en/tutorials/cors/) and [there](http://enable-cors.org/server.html).
+- Make sure your browser and server are properly configured. You can find CORS information [here](http://www.html5rocks.com/en/tutorials/cors/) and [there](http://enable-cors.org/server.html).
 - Your server will receive a `POST` call to `YourSuppliedBaseURL/state` every turn.
+- You may start by editing the `actionResponse` function in the [sample server](https://github.com/isaacbernat/dartmuti/blob/master/dartmuti/servers/dart/sample_server.dart).
 
 ##### Request
 The request provides game state information available to that player. A sample JSON is provided [here](https://github.com/isaacbernat/dartmuti/blob/master/dartmuti/servers/sample_state.json). A description follows:
@@ -157,6 +158,9 @@ In no specific order:
 - etc.
 
 ### Versions
+#### 0.1.3
+- Add endgame position
+
 #### 0.1.2
 - Add game play instructions
 - Add support for remote players via endpoint calls

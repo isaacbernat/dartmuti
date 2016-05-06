@@ -115,7 +115,7 @@ class Tabletop {
       state["players"].add({
         "name": p.name,
         "position": p.position,
-        "end_position": p.position, // 0 means the player has not ended
+        "end_position": p.endPosition, // 0 means the player has not ended
         "cards_remaining": p.hand.length,
         "has_passed": p.hasPassed,
       });
