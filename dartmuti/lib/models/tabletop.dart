@@ -21,6 +21,7 @@ class Tabletop {
   int currentPlayer = 0;
   bool gameInProgress = false;
   String gameID = '';
+  int seed = 0;
 
   Tabletop(DeckService DS, Map<String, String> playerConfigs) {
     this.DS = DS;
@@ -31,7 +32,8 @@ class Tabletop {
         .forEach((name, baseURL) => players.add(new Player(name, baseURL)));
   }
 
-  void startGame(int seed) {
+  void startGame(int randomSeed) {
+    seed = randomSeed;
     var uuid = new Uuid();
     gameID = uuid.v1();
     gameInProgress = true;
@@ -105,6 +107,7 @@ class Tabletop {
     var state = {
       "general": {
         "game_id": gameID,
+        "seed": seed,
         "current_player": currentPlayer,
         "discard_pile": discardPile.length,
         "players": players.length,

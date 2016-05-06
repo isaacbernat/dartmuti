@@ -113,6 +113,7 @@ The request provides game state information available to that player. A sample J
 ###### General
 General information of the current game state.
 - **game_id**: unique string which identifies the game. Useful to keep track of multiple games.
+- **seed**: number which random calculations are based on. E.g. shuffle cards and players.
 - **current_player**: position of whose turn it is.
 - **discard_pile**: how many cards are in the discard pile.
 - **players**: how many players are in the game.
@@ -159,6 +160,10 @@ In no specific order:
 - etc.
 
 ### Versions
+#### 0.1.4
+- Add restart game button. With same parameters as before.
+- Add random seed on remote player info. Useful to retest scenarios, etc.
+
 #### 0.1.3
 - Add game id so servers may play and keep track of multiple games at once
 - Add endgame position
