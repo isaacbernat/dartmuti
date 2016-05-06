@@ -1,6 +1,7 @@
 {
   "state": {
     "general": {
+      "game_id": "7232cc60-fe10-11e5-ab63-bb8d5cad6562",
       "current_player": 0,
       "discard_pile": 2,
       "players": 4,
@@ -25,24 +26,28 @@
       {
         "name": "dart agnan",
         "position": 0,
+        "end_position": 0,
         "cards_remaining": 18,
         "has_passed": false
       },
       {
         "name": "objet dart",
         "position": 1,
+        "end_position": 0,
         "cards_remaining": 18,
         "has_passed": false
       },
       {
         "name": "jeanne dart",
         "position": 2,
+        "end_position": 0,
         "cards_remaining": 19,
         "has_passed": true
       },
       {
         "name": "dart vader",
         "position": 3,
+        "end_position": 0,
         "cards_remaining": 19,
         "has_passed": true
       }

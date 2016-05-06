@@ -100,17 +100,19 @@ Players are ranked according to their finishing order (e.g. 1st, 3rd, etc.)
   - Add some other normal players.
 - Try it out:
   - Click start game.
-  - The bot will always `pass` when it is it's turn.
+  - The bot will always try to play it's first card when it is it's turn.
 
 #### Your own remote player
-- Make sure you browser and server are properly configured. You can find CORS information [here](http://www.html5rocks.com/en/tutorials/cors/) and [there](http://enable-cors.org/server.html).
+- Make sure your browser and server are properly configured. You can find CORS information [here](http://www.html5rocks.com/en/tutorials/cors/) and [there](http://enable-cors.org/server.html).
 - Your server will receive a `POST` call to `YourSuppliedBaseURL/state` every turn.
+- You may start by editing `actionResponse` ([dart sample server](https://github.com/isaacbernat/dartmuti/blob/master/dartmuti/servers/dart/sample_server.dart)) or `action_response` [python sample server](https://github.com/isaacbernat/dartmuti/blob/master/dartmuti/servers/python/sample_server.py). Alternatively, you may write your own server from scratch.
 
 ##### Request
 The request provides game state information available to that player. A sample JSON is provided [here](https://github.com/isaacbernat/dartmuti/blob/master/dartmuti/servers/sample_state.json). A description follows:
 
 ###### General
 General information of the current game state.
+- **game_id**: unique string which identifies the game. Useful to keep track of multiple games.
 - **current_player**: position of whose turn it is.
 - **discard_pile**: how many cards are in the discard pile.
 - **players**: how many players are in the game.
@@ -128,6 +130,7 @@ Information of your player state.
 List of player state information available to everybody.
 - **name**: player chosen name.
 - **position**: starting position.
+- **end_position**: position in which a player finished. 0 means still playing.
 - **cards_remaining**: number of cards in their hand.
 - **has_passed**: true if the player has passed this round.
 
@@ -149,7 +152,6 @@ In no specific order:
 - Artwork + style improvements.
 - More customisable logic (e.g. decks, comparison rules, support jokers).
 - Responsive design.
-- Sample AI to play using this API.
 - Central server to take care of all API calls to remote players, CORS, etc.
 - Refactor (you didn't expect that one, did you?).
 - Tests.
@@ -157,6 +159,11 @@ In no specific order:
 - etc.
 
 ### Versions
+#### 0.1.3
+- Add game id so servers may play and keep track of multiple games at once
+- Add endgame position
+- Sample remote player server written in python
+
 #### 0.1.2
 - Add game play instructions
 - Add support for remote players via endpoint calls
