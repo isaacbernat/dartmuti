@@ -45,6 +45,7 @@ class Tabletop {
     discardPile = deal(deck, players);
     int currentPosition = 0;
     for (var p in players) {
+      p.endPosition = 0;
       p.position = currentPosition++;
       p.sortHand();
     }
