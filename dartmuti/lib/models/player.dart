@@ -1,9 +1,11 @@
 library dartmuti.model.player;
 
+import 'dart:math';
+
 class Player {
   String name;
   String baseURL;
-  int endPosition; // FIXME not used ATM
+  int endPosition;
   int position;
   bool currentTurn;
   bool hasPassed;
@@ -16,6 +18,7 @@ class Player {
     this.hand = [];
     this.currentTurn = false;
     this.hasPassed = false;
+    this.endPosition = 0;
   }
 
   void sortHand() {
@@ -52,9 +55,17 @@ class Player {
     return selectedCards;
   }
 
-  void removeCards(List<Card> cards) {
+  void removeCards(List<Card> cards, List<Player> players) {
     for (Card c in cards) {
       hand.remove(c);
+    }
+    if (hand.length == 0) {
+      // has just finished. Update endPosition
+      int currentEndPosition = 0;
+      for (Player p in players) {
+        currentEndPosition = max(currentEndPosition, p.endPosition);
+      }
+      endPosition = currentEndPosition + 1;
     }
   }
 

@@ -115,6 +115,7 @@ class Tabletop {
       state["players"].add({
         "name": p.name,
         "position": p.position,
+        "end_position": p.position, // 0 means the player has not ended
         "cards_remaining": p.hand.length,
         "has_passed": p.hasPassed,
       });
@@ -181,7 +182,7 @@ class Tabletop {
       return false;
     }
 
-    p.removeCards(selectedCards);
+    p.removeCards(selectedCards, players);
     if (currentTricks.length > 0) {
       for (var c in currentTricks.last.cards) {
         c.selected = false;
@@ -200,7 +201,8 @@ class Tabletop {
     do {
       int nextPosition = (i + currentPlayer) % players.length;
 
-      if (!players[nextPosition].hasPassed) {
+      if (!players[nextPosition].hasPassed &&
+          players[nextPosition].hand.length > 0) {
         return nextPosition;
       }
     } while (++i < players.length);
