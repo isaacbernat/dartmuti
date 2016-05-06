@@ -112,6 +112,7 @@ The request provides game state information available to that player. A sample J
 
 ###### General
 General information of the current game state.
+- **game_id**: unique string which identifies the game. Useful to keep track of multiple games.
 - **current_player**: position of whose turn it is.
 - **discard_pile**: how many cards are in the discard pile.
 - **players**: how many players are in the game.
@@ -159,6 +160,7 @@ In no specific order:
 
 ### Versions
 #### 0.1.3
+- Add game id so servers may play and keep track of multiple games at once
 - Add endgame position
 - Sample remote player server written in python
 

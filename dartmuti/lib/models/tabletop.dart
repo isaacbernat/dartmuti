@@ -3,6 +3,7 @@ library dartmuti.model.tabletop;
 import 'dart:math';
 import 'dart:html';
 import 'dart:convert';
+import 'package:uuid/uuid.dart';
 import 'package:dartmuti/models/player.dart';
 import 'package:dartmuti/models/card.dart';
 import 'package:dartmuti/models/trick.dart';
@@ -18,6 +19,7 @@ class Tabletop {
   int currentPlayer = 0;
   bool gameInProgress = false;
   int seed = 0;
+  String gameID = '';
 
   Tabletop(int seed, DeckService DS, Map<String, String> playerConfigs) {
     this.DS = DS;
@@ -32,6 +34,9 @@ class Tabletop {
   }
 
   void startGame() {
+    var uuid = new Uuid();
+    gameID = uuid.v1();
+    gameInProgress = true;
     discardPile = [];
     seed = seed.toInt();
     deck = DS.getDeck();
@@ -102,6 +107,7 @@ class Tabletop {
   Map getState(int position) {
     var state = {
       "general": {
+        "game_id": gameID,
         "current_player": currentPlayer,
         "discard_pile": discardPile.length,
         "players": players.length,
@@ -129,12 +135,14 @@ class Tabletop {
     return {"state": state};
   }
 
-  bool startRound() {
-    gameInProgress = true;
-    // TODO: returns True if there are still valid moves
+  void startRound() {
+    int playersWithCards = 0;
     for (var p in players) {
       p.currentTurn = false;
       p.hasPassed = false;
+      if (p.hand.length > 0) {
+        playersWithCards++;
+      }
     }
     for (var t in currentTricks) {
       for (var c in t.cards) {
@@ -143,7 +151,11 @@ class Tabletop {
       }
     }
     currentTricks = [];
+    if (!gameInProgress) {
+      return false;
+    }
     deliverRemoteInfo();
+    gameInProgress = playersWithCards > 1;
   }
 
   bool passTurn(int position) {
