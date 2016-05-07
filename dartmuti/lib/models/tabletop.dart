@@ -52,6 +52,12 @@ class Tabletop {
     deliverRemoteInfo();
   }
 
+  void restartGame() {
+    var r = new Random();
+    int seed = r.nextInt(16777216);
+    startGame(seed);
+  }
+
   String toString() =>
       '$name -> trick to beat: $currentTricks.last . $discardPile cards discarded.';
 
@@ -76,6 +82,9 @@ class Tabletop {
       HttpRequest request = new HttpRequest();
       request.open("POST", p.baseURL + "/state", async: true);
       request.send(JSON.encode(getState(p.position)));
+      if (!gameInProgress) {
+        continue;
+      }
       if (p.position == currentPlayer) {
         request.onReadyStateChange.listen((data) {
           if (request.readyState != HttpRequest.DONE || request.status != 200) {
@@ -137,12 +146,12 @@ class Tabletop {
   }
 
   void startRound() {
-    int playersWithCards = 0;
+    List<Player> playersWithCards = [];
     for (var p in players) {
       p.currentTurn = false;
       p.hasPassed = false;
       if (p.hand.length > 0) {
-        playersWithCards++;
+        playersWithCards.add(p);
       }
     }
     for (var t in currentTricks) {
@@ -152,14 +161,19 @@ class Tabletop {
       }
     }
     currentTricks = [];
-    if (!gameInProgress) {
-      return false;
+    gameInProgress = playersWithCards.length > 1;
+    if (!gameInProgress &&
+        playersWithCards.length > 0 &&
+        playersWithCards[0].hand.length > 0) {
+      playersWithCards[0].endPosition = players.length;
     }
     deliverRemoteInfo();
-    gameInProgress = playersWithCards > 1;
   }
 
-  bool passTurn(int position) {
+  void passTurn(int position) {
+    if (!gameInProgress) {
+      return;
+    }
     Player p = players[position];
     for (var c in p.hand) {
       c.selected = false;
@@ -169,10 +183,9 @@ class Tabletop {
     currentPlayer = nextPlayerPosition();
     if (currentPlayer == nextPlayerPosition()) {
       startRound();
-      return false;
     }
     deliverRemoteInfo();
-    return true;
+    return;
   }
 
   bool playTurn(int position) {
@@ -180,6 +193,9 @@ class Tabletop {
   }
 
   bool playTrick(int playerPosition) {
+    if (!gameInProgress) {
+      return false;
+    }
     Player p = players[playerPosition];
     List<Card> selectedCards = p.getSelectedCards();
     Trick newTrick;

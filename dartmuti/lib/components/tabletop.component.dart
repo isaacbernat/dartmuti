@@ -1,7 +1,5 @@
 library dartmuti.component.tabletop;
 
-import 'dart:math';
-
 import 'package:angular2/angular2.dart';
 import 'package:angular2/router.dart' show ROUTER_DIRECTIVES, RouteParams;
 
@@ -35,8 +33,6 @@ class TabletopComponent {
   }
 
   void restartGame() {
-    var r = new Random();
-    int seed = r.nextInt(16777216);
-    model.startGame(seed);
+    model.restartGame();
   }
 }
