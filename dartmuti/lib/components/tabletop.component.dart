@@ -28,7 +28,8 @@ class TabletopComponent {
     Map<String, String> playerConfigs = routeParams.get('player_configs');
     var iterations = routeParams.get('iterations');
     iterations = iterations == null ? 1 : iterations.toInt();
-    model = new Tabletop(DS, playerConfigs, iterations);
+    var auditEndpoint = routeParams.get('audit_endpoint');
+    model = new Tabletop(DS, playerConfigs, iterations, auditEndpoint);
     var seed = routeParams.get('seed');
     seed = seed == null ? 0 : seed.toInt();
     model.startGame(seed);

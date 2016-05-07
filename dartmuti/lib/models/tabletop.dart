@@ -24,8 +24,10 @@ class Tabletop {
   int seed = 0;
   int currentIteration = 0;
   int maxIterations;
+  String auditEndpoint;
 
-  Tabletop(DeckService DS, Map<String, String> playerConfigs, int iterations) {
+  Tabletop(DeckService DS, Map<String, String> playerConfigs, int iterations,
+      String audit) {
     this.DS = DS;
     if (playerConfigs == null) {
       return;
@@ -33,6 +35,7 @@ class Tabletop {
     playerConfigs
         .forEach((name, baseURL) => players.add(new Player(name, baseURL)));
     maxIterations = iterations;
+    auditEndpoint = audit;
   }
 
   void startGame(int randomSeed) {
@@ -78,6 +81,15 @@ class Tabletop {
     return remainder;
   }
 
+  void sendAudit(String payload) {
+    if (auditEndpoint == "") {
+      return;
+    }
+    HttpRequest request = new HttpRequest();
+    request.open("POST", auditEndpoint, async: true);
+    request.send(payload);
+  }
+
   void deliverRemoteInfo() {
     for (Player p in players) {
       if (p.baseURL == '') {
@@ -85,7 +97,9 @@ class Tabletop {
       }
       HttpRequest request = new HttpRequest();
       request.open("POST", p.baseURL + "/state", async: true);
-      request.send(JSON.encode(getState(p.position)));
+      String playerState = JSON.encode(getState(p.position));
+      request.send(playerState);
+      sendAudit(playerState);
       if (!gameInProgress) {
         continue;
       }
@@ -95,9 +109,10 @@ class Tabletop {
             return;
           }
           Map res = JSON.decode(request.responseText);
+          res["current_player"] = p.position;
+          sendAudit(JSON.encode(res));
           switch (res["action"]) {
             case "pass":
-              passTurn(p.position);
               break;
             case "play":
               if (p.setCardsSelected(res["card_positions"], true)) {
@@ -106,12 +121,11 @@ class Tabletop {
                 }
                 p.setCardsSelected(res["card_positions"], false);
               }
-              passTurn(p.position);
               break;
             default:
               print("Not acceptable response. Turn skipped.");
-              passTurn(p.position);
           }
+          passTurn(p.position);
         });
       }
       if (!gameInProgress && currentIteration < maxIterations) {

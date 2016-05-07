@@ -7,6 +7,7 @@ class Settings {
   int turnTime;
   int iterations = 1;
   Map<String, String> playerConfigs = {};
+  String auditEndpoint = "";
 
   Settings() {}
 
