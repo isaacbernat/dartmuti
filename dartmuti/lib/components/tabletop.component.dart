@@ -25,9 +25,17 @@ import 'package:dartmuti/services/deck.service.dart';
 class TabletopComponent {
   Tabletop model;
   TabletopComponent(DeckService DS, RouteParams routeParams) {
-    int seed = routeParams.get('seed');
     Map<String, String> playerConfigs = routeParams.get('player_configs');
-    model = new Tabletop(seed, DS, playerConfigs);
-    model.startGame();
+    var iterations = routeParams.get('iterations');
+    iterations = iterations == null ? 1 : iterations.toInt();
+    var auditEndpoint = routeParams.get('audit_endpoint');
+    model = new Tabletop(DS, playerConfigs, iterations, auditEndpoint);
+    var seed = routeParams.get('seed');
+    seed = seed == null ? 0 : seed.toInt();
+    model.startGame(seed);
+  }
+
+  void restartGame() {
+    model.restartGame();
   }
 }

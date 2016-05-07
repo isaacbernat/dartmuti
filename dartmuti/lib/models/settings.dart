@@ -5,7 +5,9 @@ import 'dart:math';
 class Settings {
   int seed = 1337;
   int turnTime;
+  int iterations = 1;
   Map<String, String> playerConfigs = {};
+  String auditEndpoint = "";
 
   Settings() {}
 

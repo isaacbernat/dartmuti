@@ -24,7 +24,9 @@ class SettingsComponent {
       {
         'seed': model.seed,
         'turn_time': model.turnTime || 0,
-        'player_configs': model.playerConfigs
+        'audit_endpoint': model.auditEndpoint,
+        'player_configs': model.playerConfigs,
+        'iterations': model.iterations,
       }
     ]);
   }

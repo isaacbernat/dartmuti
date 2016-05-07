@@ -3,7 +3,9 @@ library dartmuti.model.tabletop;
 import 'dart:math';
 import 'dart:html';
 import 'dart:convert';
+
 import 'package:uuid/uuid.dart';
+
 import 'package:dartmuti/models/player.dart';
 import 'package:dartmuti/models/card.dart';
 import 'package:dartmuti/models/trick.dart';
@@ -18,27 +20,31 @@ class Tabletop {
   List<Player> players = [];
   int currentPlayer = 0;
   bool gameInProgress = false;
-  int seed = 0;
   String gameID = '';
+  int seed = 0;
+  int currentIteration = 0;
+  int maxIterations;
+  String auditEndpoint;
 
-  Tabletop(int seed, DeckService DS, Map<String, String> playerConfigs) {
+  Tabletop(DeckService DS, Map<String, String> playerConfigs, int iterations,
+      String audit) {
     this.DS = DS;
-    if (seed != null) {
-      this.seed = seed.toInt();
-    }
     if (playerConfigs == null) {
       return;
     }
     playerConfigs
         .forEach((name, baseURL) => players.add(new Player(name, baseURL)));
+    maxIterations = iterations;
+    auditEndpoint = audit;
   }
 
-  void startGame() {
+  void startGame(int randomSeed) {
+    seed = randomSeed;
     var uuid = new Uuid();
     gameID = uuid.v1();
     gameInProgress = true;
+    currentIteration += 1;
     discardPile = [];
-    seed = seed.toInt();
     deck = DS.getDeck();
     deck.shuffle(new Random(seed));
     players.shuffle(new Random(seed));
@@ -46,10 +52,17 @@ class Tabletop {
     discardPile = deal(deck, players);
     int currentPosition = 0;
     for (var p in players) {
+      p.endPosition = 0;
       p.position = currentPosition++;
       p.sortHand();
     }
     deliverRemoteInfo();
+  }
+
+  void restartGame() {
+    var r = new Random();
+    int seed = r.nextInt(16777216);
+    startGame(seed);
   }
 
   String toString() =>
@@ -68,6 +81,15 @@ class Tabletop {
     return remainder;
   }
 
+  void sendAudit(String payload) {
+    if (auditEndpoint == "") {
+      return;
+    }
+    HttpRequest request = new HttpRequest();
+    request.open("POST", auditEndpoint, async: true);
+    request.send(payload);
+  }
+
   void deliverRemoteInfo() {
     for (Player p in players) {
       if (p.baseURL == '') {
@@ -75,16 +97,22 @@ class Tabletop {
       }
       HttpRequest request = new HttpRequest();
       request.open("POST", p.baseURL + "/state", async: true);
-      request.send(JSON.encode(getState(p.position)));
+      String playerState = JSON.encode(getState(p.position));
+      request.send(playerState);
+      sendAudit(playerState);
+      if (!gameInProgress) {
+        continue;
+      }
       if (p.position == currentPlayer) {
         request.onReadyStateChange.listen((data) {
           if (request.readyState != HttpRequest.DONE || request.status != 200) {
             return;
           }
           Map res = JSON.decode(request.responseText);
+          res["current_player"] = p.position;
+          sendAudit(JSON.encode(res));
           switch (res["action"]) {
             case "pass":
-              passTurn(p.position);
               break;
             case "play":
               if (p.setCardsSelected(res["card_positions"], true)) {
@@ -93,13 +121,15 @@ class Tabletop {
                 }
                 p.setCardsSelected(res["card_positions"], false);
               }
-              passTurn(p.position);
               break;
             default:
               print("Not acceptable response. Turn skipped.");
-              passTurn(p.position);
           }
+          passTurn(p.position);
         });
+      }
+      if (!gameInProgress && currentIteration < maxIterations) {
+        restartGame();
       }
     }
   }
@@ -108,6 +138,7 @@ class Tabletop {
     var state = {
       "general": {
         "game_id": gameID,
+        "seed": seed,
         "current_player": currentPlayer,
         "discard_pile": discardPile.length,
         "players": players.length,
@@ -136,12 +167,12 @@ class Tabletop {
   }
 
   void startRound() {
-    int playersWithCards = 0;
+    List<Player> playersWithCards = [];
     for (var p in players) {
       p.currentTurn = false;
       p.hasPassed = false;
       if (p.hand.length > 0) {
-        playersWithCards++;
+        playersWithCards.add(p);
       }
     }
     for (var t in currentTricks) {
@@ -151,14 +182,22 @@ class Tabletop {
       }
     }
     currentTricks = [];
-    if (!gameInProgress) {
-      return false;
+    gameInProgress = playersWithCards.length > 1;
+    if (!gameInProgress &&
+        playersWithCards.length > 0 &&
+        playersWithCards[0].hand.length > 0) {
+      playersWithCards[0].endPosition = players.length;
     }
     deliverRemoteInfo();
-    gameInProgress = playersWithCards > 1;
   }
 
-  bool passTurn(int position) {
+  void passTurn(int position) {
+    if (!gameInProgress) {
+      if (currentIteration < maxIterations) {
+        restartGame();
+      }
+      return;
+    }
     Player p = players[position];
     for (var c in p.hand) {
       c.selected = false;
@@ -168,10 +207,9 @@ class Tabletop {
     currentPlayer = nextPlayerPosition();
     if (currentPlayer == nextPlayerPosition()) {
       startRound();
-      return false;
     }
     deliverRemoteInfo();
-    return true;
+    return;
   }
 
   bool playTurn(int position) {
@@ -179,6 +217,12 @@ class Tabletop {
   }
 
   bool playTrick(int playerPosition) {
+    if (!gameInProgress) {
+      if (currentIteration < maxIterations) {
+        restartGame();
+      }
+      return false;
+    }
     Player p = players[playerPosition];
     List<Card> selectedCards = p.getSelectedCards();
     Trick newTrick;

@@ -113,6 +113,7 @@ The request provides game state information available to that player. A sample J
 ###### General
 General information of the current game state.
 - **game_id**: unique string which identifies the game. Useful to keep track of multiple games.
+- **seed**: number which random calculations are based on. E.g. shuffle cards and players.
 - **current_player**: position of whose turn it is.
 - **discard_pile**: how many cards are in the discard pile.
 - **players**: how many players are in the game.
@@ -139,6 +140,11 @@ Sample valid responses:
 - Pass `{"action": "pass"}`
 - Play `{"action": "play", "card_positions": [4, 5]}`
 
+#### Multiple iterations
+In order to compare strategies, it is useful to play bots against each other for many consecutive iterations without human intervention.
+- On the settings tab there is the *# of consecutive iterations* field. If all players interact through endpoint calls, the game will be restarted (with a random seed) N amount of times after completion.
+- To collect information on end positions, which cards each player had, etc. fill the *Audit endpoint* on the settings page. It will send all state updates players receive and the actions they send back (when it is their turn). **Remember**: invalid actions will be interpreted as passing the turn.
+
 ### Contributing
 Apply [dartfmt](https://github.com/dart-lang/dart_style) to your code before
 you push to the repository, to get nice formatting.
@@ -159,6 +165,12 @@ In no specific order:
 - etc.
 
 ### Versions
+#### 0.1.4
+- Add restart game button. With same parameters as before.
+- Add setting to automaically play multiple consecutive games.
+- Add random seed on remote player info. Useful to retest scenarios, etc.
+- Add settings for audit endpoint
+
 #### 0.1.3
 - Add game id so servers may play and keep track of multiple games at once
 - Add endgame position
