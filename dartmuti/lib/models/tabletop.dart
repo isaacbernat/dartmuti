@@ -22,14 +22,17 @@ class Tabletop {
   bool gameInProgress = false;
   String gameID = '';
   int seed = 0;
+  int currentIteration = 0;
+  int maxIterations;
 
-  Tabletop(DeckService DS, Map<String, String> playerConfigs) {
+  Tabletop(DeckService DS, Map<String, String> playerConfigs, int iterations) {
     this.DS = DS;
     if (playerConfigs == null) {
       return;
     }
     playerConfigs
         .forEach((name, baseURL) => players.add(new Player(name, baseURL)));
+    maxIterations = iterations;
   }
 
   void startGame(int randomSeed) {
@@ -37,6 +40,7 @@ class Tabletop {
     var uuid = new Uuid();
     gameID = uuid.v1();
     gameInProgress = true;
+    currentIteration += 1;
     discardPile = [];
     deck = DS.getDeck();
     deck.shuffle(new Random(seed));
@@ -110,6 +114,9 @@ class Tabletop {
           }
         });
       }
+      if (!gameInProgress && currentIteration < maxIterations) {
+        restartGame();
+      }
     }
   }
 
@@ -172,6 +179,9 @@ class Tabletop {
 
   void passTurn(int position) {
     if (!gameInProgress) {
+      if (currentIteration < maxIterations) {
+        restartGame();
+      }
       return;
     }
     Player p = players[position];
@@ -194,6 +204,9 @@ class Tabletop {
 
   bool playTrick(int playerPosition) {
     if (!gameInProgress) {
+      if (currentIteration < maxIterations) {
+        restartGame();
+      }
       return false;
     }
     Player p = players[playerPosition];

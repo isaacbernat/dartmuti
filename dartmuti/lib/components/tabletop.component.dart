@@ -26,7 +26,9 @@ class TabletopComponent {
   Tabletop model;
   TabletopComponent(DeckService DS, RouteParams routeParams) {
     Map<String, String> playerConfigs = routeParams.get('player_configs');
-    model = new Tabletop(DS, playerConfigs);
+    var iterations = routeParams.get('iterations');
+    iterations = iterations == null ? 1 : iterations.toInt();
+    model = new Tabletop(DS, playerConfigs, iterations);
     var seed = routeParams.get('seed');
     seed = seed == null ? 0 : seed.toInt();
     model.startGame(seed);
